@@ -10,6 +10,9 @@
         ></script>
         <!-- styles css -->
         <link rel="stylesheet" href="/style.css" />
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Pacifico&display=swap');
+        </style>
         <title>Imageboard</title>
     </head>
     <body>
@@ -21,7 +24,7 @@
                 </div>
                 <div class="images-center">
                     <!-- SINGLE IMAGE -->
-                    <article class="image" v-for="image in images">
+                    <article class="image" v-for="image in images" v-bind:key="image.id">
                         <img
                         :src="image.url"
                         :alt="image.id"

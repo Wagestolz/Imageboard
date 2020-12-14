@@ -5,5 +5,5 @@ const db = spicedPg(
 ); //handles communication between node and sql
 
 module.exports.getImages = () => {
-    return db.query(`SELECT * FROM images ORDER BY created_at ASC;`);
+    return db.query(`SELECT * FROM images ORDER BY id DESC LIMIT 9;`);
 };
