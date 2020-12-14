@@ -1,10 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-    <title></title>
-</head>
-<body>
-    <script src="/js/vue.js"></script>
-    <script src="/js/axios.min.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- font-awesome -->
+        <script
+            src="https://kit.fontawesome.com/9c03ecbd21.js"
+            crossorigin="anonymous"
+        ></script>
+        <!-- styles css -->
+        <link rel="stylesheet" href="/style.css" />
+        <title>Imageboard</title>
+    </head>
+    <body>
+        <div id="main" v-cloak>
+            <!-- IMAGES  -->
+            <section class="images-container">
+                <div class="title">
+                    <h1>Aloha Imageboard</h1>
+                </div>
+                <div class="images-center">
+                    <!-- SINGLE IMAGE -->
+                    <article class="image" v-for="image in images">
+                        <img
+                        :src="image.url"
+                        :alt="image.id"
+                        @click="imageTitleMethod(image.title)"
+                        />
+                        <!-- IMAGE INFO -->
+                        <div class="image-info">
+                            <h3>{{image.title}}</h3>
+                            <p>{{image.description}}</p>
+                        </div>
+                        <!-- IMAGE FOOTER -->
+                        <div class="image-footer">
+                            <span><i class="fab fa-twitter"></i></span>
+                            <span><i class="fab fa-facebook"></i></span>
+                            <span><i class="fab fa-linkedin"></i></span>
+                            <span><i class="fab fa-instagram"></i></span>
+                        </div>
+                    </article>
+                    <!-- END OF SINGLE IMAGE -->
+                </div>
+            </section>
+            <!-- END OF IMAGES  -->
+
+            <!-- Daynamic changes: -->
+            <!-- <h2>Clicked on image: {{ name }}</h2> -->
+            
+            <!-- 2 ways to use v-bind: -->
+            <!-- <h2 v-bind:class="myClassName">The cohort is: {{ name }}</h2> -->
+            <!-- <h2 :class="myClassName">The cohort is: {{ name }}</h2> -->
+            <!-- if or else conditional -->
+            <!-- <h2 v-if="seen">Can you see me?</h2>
+            <h2 v-else>I am the else</h2> -->
+            <!-- <ul> -->
+
+            <!-- 2 ways to use v-on: -->
+            <!-- <li v-for="city in cities" v-on:click="petesMethod">{{city.name}}, {{city.country}}</li> -->
+            <!-- <li v-for="city in cities" @click="petesMethod(city.name)">
+                    {{city.name}}, {{city.country}}
+                </li>
+            </ul> -->
+
+            <!-- use javascript directly: -->
+            <!-- <p>HELLO WORLD</p>
+            <h2>2*2 = {{ 2*2 }}</h2>
+            <h2>Capitalise {{ "hello".toUpperCase() }}</h2> -->
+        </div>
+        <script src="/js/vue.js"></script>
+        <script src="/js/axios.min.js"></script>
+        <script src="/js/script.js"></script>
+    </body>
 </html>

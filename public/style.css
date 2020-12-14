@@ -1,0 +1,209 @@
+[v-cloak] > * {
+    display: none;
+}
+[v-cloak]::before {
+    content: 'loading...';
+}
+
+.peter {
+    color: red;
+}
+
+/* 
+===================
+Fonts (Original Surfer + Open Sans Condensed)
+Fonts (Pacifico, Open Sans)  
+===================
+*/
+
+/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Original+Surfer&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Pacifico&display=swap');
+
+/*
+=============== 
+Variables
+===============
+*/
+
+:root {
+    /*  HAWAIIAN COLOR PATTERN */
+    --baby: #45a6cc;
+    --babyMid: #4591cc;
+    --babyDark: #457bcc;
+    --lila: #5b2fb2;
+    --pink: #e541a5;
+    --sun: #ecc03a;
+    --bright: #f0e047;
+    /*  HAWAIIAN FONT PAIRING */
+    /* --ff-head: 'Original Surfer', cursive;
+    --ff-text: 'Open Sans Condensed', sans-serif; */
+    --ff-head: 'Pacifico', cursive;
+    --ff-text: 'Open Sans', sans-serif;
+    --transition: all 0.3s linear;
+    --spacing: 0.1rem;
+    --radius: 0.75rem;
+    --light-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --dark-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    --max-width: 1170px;
+    --fixed-width: 620px;
+}
+
+/*
+=============== 
+Global Styles
+===============
+*/
+
+*,
+::after,
+::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--ff-text);
+    background-color: var(--baby);
+    background: linear-gradient(
+            0deg,
+            rgba(69, 123, 204, 0.8),
+            rgba(69, 166, 204, 1)
+        )
+        url('/AlohaFriday2.jpg');
+    background-size: cover;
+    color: var(--bright);
+    line-height: 1.5;
+    font-size: 0.875rem;
+}
+
+ul {
+    list-style-type: none;
+}
+a {
+    text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4 {
+    /* letter-spacing: var(--spacing); */
+    text-transform: capitalize;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+h1 {
+    font-size: 3rem;
+    font-family: var(--ff-head);
+}
+h2 {
+    font-size: 2rem;
+    font-family: var(--ff-head);
+}
+h3 {
+    font-size: 1.25rem;
+    font-family: var(--ff-head);
+}
+h4 {
+    font-size: 0.875rem;
+}
+p {
+    margin-bottom: 1.25rem;
+}
+
+img {
+    width: 100%;
+    display: block;
+}
+@media screen and (min-width: 800px) {
+    h1 {
+        font-size: 4rem;
+    }
+    h2 {
+        font-size: 2.5rem;
+    }
+    h3 {
+        font-size: 1.75rem;
+    }
+    h4 {
+        font-size: 1rem;
+    }
+    body {
+        font-size: 1rem;
+    }
+    h1,
+    h2,
+    h3,
+    h4 {
+        line-height: 1;
+    }
+}
+
+/*
+=============== 
+Images Section
+===============
+*/
+
+.title {
+    text-align: center;
+    /* color: var(--pink); */
+}
+
+.images-container {
+    padding: 4rem 0;
+}
+.images-center {
+    width: 80vw;
+    max-width: 1170px;
+    margin: 2rem auto;
+}
+
+.image {
+    border: 5px solid var(--babyDark);
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 260px 1fr auto;
+    box-sizing: content-box;
+    z-index: 2;
+}
+.image img {
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.image-info {
+    padding: 1rem;
+}
+.image-footer {
+    background: var(--babyDark);
+    padding: 0.5rem 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+}
+
+.image-footer span {
+    color: var(--bright);
+}
+
+@media screen and (min-width: 768px) {
+    .images-center {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 2rem;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .images-center {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
