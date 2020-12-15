@@ -176,7 +176,7 @@ Images Section
 .image img {
     height: 100%;
     object-fit: cover;
-
+    object-position: 100% 0%;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }

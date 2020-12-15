@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 const db = require('./db');
-// const bodyParser = require('body-parser');
-const multer = require('multer');
-const uidSafe = require('uid-safe');
+const multer = require('multer'); // middleware for handling multipart/form-data (for uploading files)
+const uidSafe = require('uid-safe'); // generating unique names for uploaded files
 const path = require('path');
 const s3 = require('./s3');
+const { s3Url } = require('./config.json');
 
 // boilerplate setup multer
+// multer needs to determin the PATH and FILENAME to use when saving files
 const diskStorage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, __dirname + '/uploads');
@@ -19,24 +20,17 @@ const diskStorage = multer.diskStorage({
     },
 });
 
-const upload = multer({
+// pass diskStorage to multer along with filesize limit
+// "uploader" object now has middleware functions (= methods) on it like "uploader.single("filename")" --> only expecting one file --> pass the name of the input field to it here (= "image") from where it gets the filename --> gives us req.file!
+const uploader = multer({
     storage: diskStorage,
     limits: {
-        fileSize: 2097152, //2mb
+        fileSize: 2097152, // = 2mb
     },
 });
 
-//  pass the name of the input field! ("image") --> moved to post request
-// app.use(upload.single('image'));
-
-// bodyParser Middleware to encode req.body
-// app.use(
-//     bodyParser.urlencoded({
-//         extended: true,
-//     })
-// );
-
 app.get('/images', (req, res) => {
+    console.log('GET request to /images');
     db.getImages()
         .then(({ rows }) => {
             res.json(rows);
@@ -46,14 +40,17 @@ app.get('/images', (req, res) => {
         });
 });
 
-app.post('/upload', upload.single('image'), s3.upload, (req, res) => {
-    console.log('req.body', req.body);
-    console.log('req.file', req.file);
-    // https://s3.amazonaws.com/aloha.imageboard/ + imagename = location of picture on s3 --> consturct from config.json and req or res.file.filename
-    // insert into database
-    // unshift() --> which time to update vue?
+app.post('/upload', uploader.single('image'), s3.upload, (req, res) => {
+    const { title, user, description } = req.body;
+    const url = `${s3Url}${req.file.filename}`;
     if (req.file) {
-        res.json({ success: true });
+        db.storeNewImage(url, user, title, description)
+            .then(() => {
+                res.json({ url, user, title, description });
+            })
+            .catch((err) => {
+                console.log('error in db.storeNewImage: ', err);
+            });
     } else {
         res.json({ success: false });
     }

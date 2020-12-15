@@ -1,3 +1,8 @@
+-- DELETE FROM images WHERE username = 'funkychicken';
+-- DELETE FROM images WHERE username = 'discoduck';
+
+
+
 DROP TABLE IF EXISTS images;
 
 CREATE TABLE images(

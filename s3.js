@@ -33,7 +33,7 @@ module.exports.upload = (req, res, next) => {
             // it worked!!!
             console.log('amazon upload complete');
             next();
-            // Optionally delete image from server
+            // Optionally delete image from server (/public):
             fs.unlink(path, () => {}); // noop function
         })
         .catch((err) => {
