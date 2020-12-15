@@ -9,6 +9,7 @@ var app = new Vue({
         description: '',
         user: '',
         image: null,
+        inputField: '',
         images: [],
     },
     // "mounted" lifecycle hook
@@ -27,6 +28,7 @@ var app = new Vue({
     methods: {
         handleFileChange: function (e) {
             this.image = e.target.files[0];
+            this.inputField = e.target.files[0].name;
         },
         handleUpload: function (e) {
             e.preventDefault();
