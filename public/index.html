@@ -10,8 +10,11 @@
         ></script>
         <!-- styles css -->
         <link rel="stylesheet" href="/style.css" />
-        <style>
+        <!-- <style>
             @import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Pacifico&display=swap');
+        </style> -->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&family=Original+Surfer&display=swap');
         </style>
         <title>🏄‍♂️😎 Celebs in Aloha</title>
     </head>
@@ -21,8 +24,8 @@
             <!-- Title-->
             <section class="title-container">
                 <div class="title-center">
-                <h2 class="title" >Spotted a celeb wearing Aloha?</h2>
-                <h3 class="title">Upload it here!</h3>  
+                <!-- <h2 class="title" >Spotted a celeb wearing Aloha?</h2>
+                <h3 class="title">Upload it here!</h3>   -->
                 </div>
             </section>
             <!-- Form-->
@@ -31,6 +34,8 @@
                     <form method="POST" action="/upload" enctype="multipart/form-data">
                         <div class="form-item">
                             <!-- <label for="title">Title</label> -->
+                            <h2 class="title" >Spotted celebs wearing Aloha?</h2>
+                            <h3 class="title">Upload it here!</h3> 
                             <input type="text" name="title" v-model="title" placeholder="Title">
                         </div>
                         <div class="form-item">
@@ -95,13 +100,17 @@
         <!-- End of Vue Instance -->
         <!-- Component Script tag (outside vue instance!) -->
         <script id="template" type="text/x-template">
-            <div class="modal">
-                <h2 @click="closeModal"><i class="fas fa-window-close"></i></h2>
-                <h2>Title: {{image.title}} </h2>
-                <h3>Description: {{image.description}} </h3>
-                <h4>Username: {{image.username}} </h4>
-                <img :src="image.url" :alt="image.id">
-            </div>    
+            <div class="modal" >
+                <div class="modal-container" >
+                    <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
+                    <img :src="image.url" :alt="image.id">
+                    <div class="modal-title-container">
+                        <h2>Title: {{image.title}} </h2>
+                        <h3>Description: {{image.description}} </h3>
+                        <h4>Username: {{image.username}} </h4>
+                    </div>
+                </div>
+            </div> 
         </script>
         <!-- End of Component Script tag -->
         <script src="/js/vue.js"></script>

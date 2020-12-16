@@ -87,11 +87,8 @@
             },
             setImageId: function (e, id) {
                 this.clickId = id;
-                console.log('this.clickId: ', this.clickId);
-                console.log('e.target: ', e.target);
             },
             closeMe: function () {
-                console.log('coseMe is running');
                 this.clickId = null;
             },
         },
