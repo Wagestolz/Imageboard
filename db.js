@@ -14,3 +14,7 @@ module.exports.storeNewImage = (upUrl, upUser, UpTitle, UpDescription) => {
         [upUrl, upUser, UpTitle, UpDescription]
     );
 };
+
+module.exports.getModalImage = (id) => {
+    return db.query(`SELECT * FROM images WHERE id = $1`, [id]);
+};

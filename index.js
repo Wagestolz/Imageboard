@@ -29,6 +29,7 @@ const uploader = multer({
     },
 });
 
+// Initial Rendering
 app.get('/images', (req, res) => {
     console.log('GET request to /images');
     db.getImages()
@@ -40,6 +41,7 @@ app.get('/images', (req, res) => {
         });
 });
 
+// Image Upload
 app.post('/upload', uploader.single('image'), s3.upload, (req, res) => {
     const { title, user, description } = req.body;
     const url = `${s3Url}${req.file.filename}`;
@@ -54,6 +56,19 @@ app.post('/upload', uploader.single('image'), s3.upload, (req, res) => {
     } else {
         res.json({ success: false });
     }
+});
+
+// Open Modal
+app.get('/modal', (req, res) => {
+    console.log('GET request to /modal');
+    const id = req.query.id;
+    db.getModalImage(id)
+        .then(({ rows }) => {
+            res.json(rows);
+        })
+        .catch((err) => {
+            console.log('error in db.getModalImage: ', err);
+        });
 });
 
 app.use(express.static('public'));

@@ -69,6 +69,7 @@
                         <img
                         :src="image.url"
                         :alt="image.id"
+                        @click="setImageId($event, image.id)"
                         />
                         <!-- IMAGE INFO -->
                         <div class="image-info">
@@ -87,32 +88,51 @@
                 </div>
             </section>
             <!-- END OF IMAGE GALLERY  -->
-
-            <!-- Daynamic changes: -->
-            <!-- <h2>Clicked on image: {{ name }}</h2> -->
-            
-            <!-- 2 ways to use v-bind: -->
-            <!-- <h2 v-bind:class="myClassName">The cohort is: {{ name }}</h2> -->
-            <!-- <h2 :class="myClassName">The cohort is: {{ name }}</h2> -->
-            <!-- if or else conditional -->
-            <!-- <h2 v-if="seen">Can you see me?</h2>
-            <h2 v-else>I am the else</h2> -->
-            <!-- <ul> -->
-
-            <!-- 2 ways to use v-on: -->
-            <!-- <li v-for="city in cities" v-on:click="petesMethod">{{city.name}}, {{city.country}}</li> -->
-            <!-- <li v-for="city in cities" @click="petesMethod(city.name)">
-                    {{city.name}}, {{city.country}}
-                </li>
-            </ul> -->
-
-            <!-- use javascript directly: -->
-            <!-- <p>HELLO WORLD</p>
-            <h2>2*2 = {{ 2*2 }}</h2>
-            <h2>Capitalise {{ "hello".toUpperCase() }}</h2> -->
+            <!-- MODAL COMPONENT -->
+            <modal-component v-if="clickId" :click-id="clickId" @close="closeMe"></modal-component>
+            <!-- MODAL COMPONENT -->
         </div>
+        <!-- End of Vue Instance -->
+        <!-- Component Script tag (outside vue instance!) -->
+        <script id="template" type="text/x-template">
+            <div class="modal">
+                <h2 @click="closeModal"><i class="fas fa-window-close"></i></h2>
+                <h2>Title: {{image.title}} </h2>
+                <h3>Description: {{image.description}} </h3>
+                <h4>Username: {{image.username}} </h4>
+                <img :src="image.url" :alt="image.id">
+            </div>    
+        </script>
+        <!-- End of Component Script tag -->
         <script src="/js/vue.js"></script>
         <script src="/js/axios.min.js"></script>
         <script src="/js/script.js"></script>
     </body>
 </html>
+
+
+<!--        LECTURE NOTES:
+
+            Daynamic changes:
+            <h2>Clicked on image: {{ name }}</h2>
+            
+            2 ways to use v-bind:
+            <h2 v-bind:class="myClassName">The cohort is: {{ name }}</h2>
+            <h2 :class="myClassName">The cohort is: {{ name }}</h2>
+            if or else conditional
+            <h2 v-if="seen">Can you see me?</h2>
+            <h2 v-else>I am the else</h2> 
+            <ul>
+
+            2 ways to use v-on:
+            <li v-for="city in cities" v-on:click="petesMethod">{{city.name}}, {{city.country}}</li>
+            <li v-for="city in cities" @click="petesMethod(city.name)">
+                    {{city.name}}, {{city.country}}
+                </li>
+            </ul>
+
+            use javascript directly:
+            <p>HELLO WORLD</p>
+            <h2>2*2 = {{ 2*2 }}</h2>
+            <h2>Capitalise {{ "hello".toUpperCase() }}</h2>
+             -->
