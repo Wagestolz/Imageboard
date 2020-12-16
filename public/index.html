@@ -68,8 +68,8 @@
                         />
                         <!-- IMAGE INFO -->
                         <div class="image-info">
-                            <h3>{{image.title}}</h3>
-                            <p>{{image.description}}</p>
+                            <h3>{{image.title || 'Another Legend'}}</h3>
+                            <p>{{image.description || 'Look at this beauty'}}</p>
                         </div>
                         <!-- IMAGE FOOTER -->
                         <div class="image-footer">
@@ -95,9 +95,10 @@
                     <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
                     <img :src="image.url" :alt="image.id">
                     <div class="modal-title-container">
-                        <h2>{{image.title}} </h2>
-                        <h3>{{image.description}} </h3>
-                        <h4>{{image.username}} </h4>
+                        <h2>{{image.title || 'Another Legend'}}</h2>
+                        <h3>{{image.description || 'Look at this beauty'}}</h3>
+                        <h4>uploaded by <span>{{image.username || 'unknown'}}</span> on <span>{{image.created_at.substring(0, 10)}}</span> 
+                    </h4>
                     </div>
                 </div>
             </div> 

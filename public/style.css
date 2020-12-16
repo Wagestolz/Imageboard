@@ -149,7 +149,6 @@ Upload Form
     height: 0.1px;
     opacity: 0;
     overflow: hidden;
-    /* position: absolute; */
     z-index: -1;
 }
 
@@ -215,7 +214,6 @@ form {
     background-color: rgba(255, 255, 255, 0.9);
     font-size: 1rem;
     font-family: var(--ff-text);
-    /* color: var(--baby); */
     margin-bottom: 1rem;
     outline: none;
     border: solid 2px rgba(0, 0, 0, 0);
@@ -307,7 +305,6 @@ Images Section
 
 .title {
     text-align: center;
-    /* color: var(--pink); */
 }
 
 .images-container {
@@ -319,26 +316,25 @@ Images Section
 }
 
 .image {
-    /* border: 5px solid var(--bright); */
-    border: 5px solid transparent;
-    /* border-top-left-radius: var(--radius);
-    border-top-right-radius: var(--radius); */
     border-radius: 2rem;
     margin-bottom: 3rem;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 360px 1fr auto;
-    /* box-sizing: content-box; */
     z-index: 2;
     align-items: start;
+    box-shadow: var(--dark-shadow);
+    transition: var(--transition);
+}
+
+.image:hover {
+    transform: scale(1.02);
 }
 .image img {
     height: 100%;
     width: 100%;
     object-fit: cover;
     object-position: 50% 0%;
-    /* border-top-left-radius: 5px;
-    border-top-right-radius: 5px; */
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
 }
@@ -346,7 +342,6 @@ Images Section
     height: 100%;
     min-height: 100px;
     padding: 1rem;
-    /* background: var(--babyDark); */
     background: linear-gradient(
         0deg,
         rgba(69, 143, 204, 1),
@@ -360,6 +355,7 @@ Images Section
 }
 .image-info p {
     font-size: 1rem;
+    color: var(--bright);
 }
 .image-footer {
     background: var(--pink);
@@ -437,6 +433,9 @@ Modal
     margin-top: 2rem;
     align-self: center;
     justify-self: start;
+}
+.modal-title-container span {
+    color: var(--lila);
 }
 
 .close-btn {
