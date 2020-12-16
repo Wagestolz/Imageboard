@@ -21,33 +21,23 @@
     <body>
         <div id="main" v-cloak>
             <!-- IMAGE UPLOADER -->
-            <!-- Title-->
-            <section class="title-container">
-                <div class="title-center">
-                <!-- <h2 class="title" >Spotted a celeb wearing Aloha?</h2>
-                <h3 class="title">Upload it here!</h3>   -->
-                </div>
-            </section>
             <!-- Form-->
             <section class="form-container">
                 <div class="form-center">
                     <form method="POST" action="/upload" enctype="multipart/form-data">
                         <div class="form-item">
-                            <!-- <label for="title">Title</label> -->
                             <h2 class="title" >Spotted celebs wearing Aloha?</h2>
                             <h3 class="title">Upload it here!</h3> 
-                            <input type="text" name="title" v-model="title" placeholder="Title">
+                            <input class="field" type="text" name="title" v-model="title" placeholder="Title" required>
                         </div>
                         <div class="form-item">
-                            <!-- <label for="title">Description</label> -->
-                            <input type="text" name="description" v-model="description" placeholder="Description">
+                            <input class="field" type="text" name="description" v-model="description" placeholder="Description" required>
                         </div>
                         <div class="form-item">
-                            <!-- <label for="title">Username</label> -->
-                            <input type="text" name="user" v-model="user" placeholder="Username">
+                            <input class="field" type="text" name="user" v-model="user" placeholder="Username" required>
                         </div>
                         <div class="form-item">
-                            <button @click="handleUpload">Upload</button>
+                            <button class="upload-btn" @click="handleUpload">Upload</button>
                         </div>
                     </form>
                     <div class="choose-file">
@@ -105,9 +95,9 @@
                     <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
                     <img :src="image.url" :alt="image.id">
                     <div class="modal-title-container">
-                        <h2>Title: {{image.title}} </h2>
-                        <h3>Description: {{image.description}} </h3>
-                        <h4>Username: {{image.username}} </h4>
+                        <h2>{{image.title}} </h2>
+                        <h3>{{image.description}} </h3>
+                        <h4>{{image.username}} </h4>
                     </div>
                 </div>
             </div> 
@@ -144,4 +134,4 @@
             <p>HELLO WORLD</p>
             <h2>2*2 = {{ 2*2 }}</h2>
             <h2>Capitalise {{ "hello".toUpperCase() }}</h2>
-             -->
+            -->

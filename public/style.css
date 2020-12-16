@@ -163,6 +163,7 @@ Upload Form
     display: inline-block;
     cursor: pointer;
     padding: 1rem 2rem;
+    box-shadow: var(--light-shadow);
     transition: var(--transition);
 }
 
@@ -171,26 +172,15 @@ Upload Form
     transform: scale(1.1);
 }
 
-/* TITLE */
+/*  FORM */
 
-.title-container {
-    padding-top: 4rem;
-}
-.title-center {
-    width: 80vw;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-}
-
-/* ACTUAL FORM */
-.form-container {
-    /* padding: 4rem 0; */
+form {
+    width: 80%;
 }
 .form-center {
     width: 80vw;
-    min-height: 350px;
-    max-width: 700px;
+    min-height: 600px;
+    max-width: 800px;
     margin: 2rem auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -211,13 +201,56 @@ Upload Form
     align-items: center;
 }
 .form-item h2 {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-style: var(--ff-text);
 }
 .form-item h3 {
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-style: var(--ff-text);
+    padding-bottom: 1.5rem;
 }
+.field {
+    width: 100%;
+    padding: 0.4rem 0.5rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    font-family: var(--ff-text);
+    /* color: var(--baby); */
+    margin-bottom: 1rem;
+    outline: none;
+    border: solid 2px rgba(0, 0, 0, 0);
+    transition: var(--transition);
+    border-radius: var(--radius);
+}
+
+.field:focus {
+    background-color: rgba(255, 255, 255, 1);
+    border: 2px solid rgba(240, 224, 71, 1);
+}
+
+.upload-btn {
+    width: 100%;
+    padding: 0.4rem 0.5rem;
+    font-size: 1.1rem;
+    font-family: var(--ff-head);
+    color: var(--bright);
+    background-color: #4bb2dc;
+    border-radius: var(--radius);
+    box-shadow: var(--light-shadow);
+    margin-bottom: 1rem;
+    outline: none;
+    border: none;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🌈</text></svg>")
+            16 0,
+        auto;
+    transition: var(--transition);
+}
+
+.upload-btn:hover {
+    background-color: #57bfe8;
+    transform: scale(1.02);
+}
+
 @media screen and (min-width: 800px) {
     .form-item h2 {
         font-size: 2.25rem;
@@ -226,6 +259,17 @@ Upload Form
     .form-item h3 {
         font-size: 1.5rem;
         font-style: var(--ff-text);
+        padding-bottom: 1.5rem;
+    }
+    .form-center {
+        min-height: 430px;
+    }
+    .upload-btn {
+        margin-bottom: 1rem;
+    }
+    .choose-file {
+        border-top-right-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
     }
 }
 .choose-file {
@@ -235,6 +279,7 @@ Upload Form
     align-items: center;
     width: 100%;
     height: 100%;
+    min-height: 200px;
     background: linear-gradient(
             0deg,
             rgba(69, 123, 204, 0.2),
@@ -242,7 +287,7 @@ Upload Form
         ),
         url('/img/bg.jpg');
     background-size: cover;
-    border-top-right-radius: var(--radius);
+    border-bottom-left-radius: var(--radius);
     border-bottom-right-radius: var(--radius);
 }
 
@@ -274,9 +319,11 @@ Images Section
 }
 
 .image {
-    border: 5px solid var(--bright);
-    border-top-left-radius: var(--radius);
-    border-top-right-radius: var(--radius);
+    /* border: 5px solid var(--bright); */
+    border: 5px solid transparent;
+    /* border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius); */
+    border-radius: 2rem;
     margin-bottom: 3rem;
     display: grid;
     grid-template-columns: 1fr;
@@ -290,20 +337,39 @@ Images Section
     width: 100%;
     object-fit: cover;
     object-position: 50% 0%;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    /* border-top-left-radius: 5px;
+    border-top-right-radius: 5px; */
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
 }
 .image-info {
+    height: 100%;
+    min-height: 100px;
     padding: 1rem;
-    /* background: var(--pink); */
+    /* background: var(--babyDark); */
+    background: linear-gradient(
+        0deg,
+        rgba(69, 143, 204, 1),
+        rgba(69, 166, 204, 1)
+    );
+}
+
+.image-info h3 {
+    font-family: var(--ff-head);
+    font-size: 2rem;
+}
+.image-info p {
+    font-size: 1rem;
 }
 .image-footer {
-    background: var(--lila);
+    background: var(--pink);
     padding: 0.5rem 1rem;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     justify-items: center;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
 }
 
 .image-footer span {
@@ -339,8 +405,8 @@ Modal
     overflow: auto;
     background: linear-gradient(
         0deg,
-        rgba(229, 65, 165, 0.9),
-        rgb(229, 65, 165, 0.8)
+        rgba(229, 65, 165, 0.95),
+        rgb(229, 65, 165, 0.9)
     );
     z-index: 10;
     display: grid;
@@ -360,9 +426,10 @@ Modal
 
 .modal-container img {
     max-height: 600px;
+    min-height: 360px;
     max-width: 600px;
     object-fit: cover;
-    object-position: 40% 0%;
+    object-position: 50% 0%;
     border-radius: var(--radius);
 }
 
