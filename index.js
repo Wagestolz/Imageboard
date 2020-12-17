@@ -47,8 +47,9 @@ app.post('/upload', uploader.single('image'), s3.upload, (req, res) => {
     const url = `${s3Url}${req.file.filename}`;
     if (req.file) {
         db.storeNewImage(url, user, title, description)
-            .then(() => {
-                res.json({ url, user, title, description });
+            .then(({ rows }) => {
+                // console.log('rows: ', rows[0]);
+                res.json(rows[0]);
             })
             .catch((err) => {
                 console.log('error in db.storeNewImage: ', err);

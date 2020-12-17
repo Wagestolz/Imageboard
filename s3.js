@@ -8,10 +8,12 @@ if (process.env.NODE_ENV == 'production') {
     secrets = require('./secrets'); // in dev they are in secrets.json which is listed in .gitignore
 }
 
-const s3 = new aws.S3({
-    accessKeyId: secrets.AWS_KEY,
-    secretAccessKey: secrets.AWS_SECRET,
-});
+const s3 = new aws.S3(
+    process.env.SESSION_SECRET || {
+        accessKeyId: secrets.AWS_KEY,
+        secretAccessKey: secrets.AWS_SECRET,
+    }
+);
 
 module.exports.upload = (req, res, next) => {
     const { filename, mimetype, size, path } = req.file;

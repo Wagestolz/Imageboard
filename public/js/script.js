@@ -5,7 +5,7 @@
 
     Vue.component('modal-component', {
         template: '#template', // the id of the script tag below vue instance
-        props: ['sayGreeting', 'clickId'],
+        props: ['clickId'],
         // props: ['sayGreeting', 'id', 'url', 'title', 'description'],
         data: function () {
             // data is a function for component (own data set)
@@ -87,6 +87,7 @@
                     });
             },
             setImageId: function (e, id) {
+                console.log('running', id);
                 this.clickId = id;
             },
             closeMe: function () {

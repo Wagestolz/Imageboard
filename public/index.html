@@ -84,11 +84,19 @@
             </section>
             <!-- END OF IMAGE GALLERY  -->
             <!-- MODAL COMPONENT -->
-            <modal-component v-if="clickId" :click-id="clickId" @close="closeMe"></modal-component>
+            <modal-component v-if="clickId" :click-id="clickId" @close="closeMe">
+            <modal-component></modal-component>
+            </modal-component>
             <!-- MODAL COMPONENT -->
         </div>
         <!-- End of Vue Instance -->
-        <!-- Component Script tag (outside vue instance!) -->
+        <!-- Comments-Component Script Tag (outside vue instance!)-->
+        <script id="comment-template" type="text/x-template">
+            <div class="comments"></div> 
+        </script>
+        <!-- Comments-Component Script Tag -->
+
+        <!-- Modal-Component Script tag (outside vue instance!) -->
         <script id="template" type="text/x-template">
             <div class="modal" >
                 <div class="modal-container" >
@@ -103,7 +111,8 @@
                 </div>
             </div> 
         </script>
-        <!-- End of Component Script tag -->
+        <!-- End of Modal-Component Script tag -->
+
         <script src="/js/vue.js"></script>
         <script src="/js/axios.min.js"></script>
         <script src="/js/script.js"></script>
