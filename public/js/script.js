@@ -51,7 +51,7 @@
             images: [],
             clickId: null,
             lowestId: null,
-            more: true,
+            more: false,
         },
         // "mounted" lifecycle hook
         mounted: function () {
@@ -65,6 +65,9 @@
                 .catch(function (error) {
                     console.log('error at GET /', error);
                 });
+            if (self.images.length == 9) {
+                self.more = true;
+            }
         },
         methods: {
             handleFileChange: function (e) {
