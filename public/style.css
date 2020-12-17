@@ -440,9 +440,11 @@ Modal
 }
 
 .modal-container {
-    width: 60vw;
+    padding-top: 2rem;
+    width: 85vw;
     max-width: 600px;
     display: grid;
+    grid-template-rows: auto auto 1fr;
     justify-items: center;
     align-items: center;
     transition: var(--transition);
@@ -478,4 +480,111 @@ Modal
 .close-btn:hover {
     transform: scale(1.1);
     color: var(--bright);
+}
+
+@media screen and (max-width: 768px) {
+    .close-btn {
+        top: 20px;
+    }
+    .modal-container img {
+        margin-top: 2rem;
+    }
+}
+
+/*
+=============== 
+Comments
+===============
+*/
+
+.comments {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+
+    width: 100%;
+    /* align-self: center;
+    justify-self: center; */
+}
+
+.comments-container {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 100px 220px;
+    align-items: center;
+    justify-items: center;
+    height: 100%;
+
+    /* margin: 4rem auto; */
+}
+
+.comments-title {
+    /* background-color: var(--lila);
+    opacity: 0.9; */
+    padding-top: 1rem;
+    background: linear-gradient(
+        0deg,
+        rgba(69, 123, 204, 0.9),
+        rgba(69, 166, 204, 0.7)
+    );
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+
+    height: 100%;
+    width: 100%;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.comments-inputs {
+    background: linear-gradient(
+        0deg,
+        rgba(69, 166, 204, 0.7),
+        rgba(69, 123, 204, 0.9)
+    );
+    height: 100%;
+    width: 100%;
+    padding-top: 1rem;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.comment-item {
+    width: 100%;
+    margin: 0;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+.comment-item input {
+    width: 90%;
+    margin: 0;
+}
+
+.posted-comments {
+    padding: 2rem 0;
+    width: 100%;
+    background: linear-gradient(
+        0deg,
+        rgba(69, 123, 204, 0.5),
+        rgba(69, 166, 204, 0.7)
+    );
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+}
+
+.posted-comments h3 {
+    color: var(--bright);
+    font-family: var(--ff-head);
+}
+.posted-comments h4 {
+    color: var(--bright);
+}
+
+.posted-comments span {
+    color: var(--pink);
 }

@@ -103,8 +103,8 @@
                         <h3>{{image.description || 'Look at this beauty'}}</h3>
                         <h4>uploaded by <span>{{image.username || 'unknown'}}</span> on <span>{{image.created_at.substring(0, 10)}}</span> 
                     </h4>
-                    <comment-component :click-id="clickId"></comment-component>
-                    </div>
+                </div>
+                <comment-component :click-id="clickId"></comment-component>
                 </div>
             </div> 
         </script>
@@ -113,24 +113,29 @@
         <script id="comment-template" type="text/x-template">
             <div class="comments">
                 <div class="comments-container" >
-                    <h2>Leave a Comment!clickId: {{clickId}}</h2>
-                    <div class="form-item">
-                    <input class="field" type="text" name="comment" v-model="comment" placeholder="Comment" required>
+                    <div class="comments-title">
+                        <h2>Leave a Comment!</h2>
                     </div>
-                    <div class="form-item">
-                    <input class="field" type="text" name="username" v-model="username" placeholder="Username" required>
-                    </div>
-                    <div class="more-btn">
-                    <button @click="postComment">Comment</button>
+                    <div class="comments-inputs">
+                        <div class="comment-item">
+                        <input class="field" type="text" name="comment" v-model="comment" placeholder="Comment" required>
+                        </div>
+                        <div class="comment-item">
+                        <input class="field" type="text" name="username" v-model="username" placeholder="Username" required>
+                        </div>
+                        <div class="more-btn">
+                        <button @click="postComment">Submit</button>
+                        </div>
                     </div>
                 </div>
                 <div class="posted-comments">
-                    <h3>User Comments:</h3>
-                    <h4 v-if="empty">Be the first to comment!</h4>
-                    <!-- <h2 v-else>That's all!</h2>  -->
-                    <div v-for="each in comments">
-                        <h3>{{each.comment}}</h3>
-                        <h4>comment by <span>{{each.username || 'unknown'}}</span> on <span>{{each.created_at.substring(0, 10)}}</span></h4>
+                    <!-- <h3>User Comments:</h3> -->
+                    <div class="posted-comments-center">
+                        <h4 v-if="empty">Be the first to comment!</h4>
+                        <div v-for="each in comments" class="single-comments">
+                            <h3>{{each.comment}}</h3>
+                            <h4>comment by <span>{{each.username || 'unknown'}}</span> on <span>{{each.created_at.substring(0, 10)}}</span></h4>
+                        </div>
                     </div>
                 </div>
             </div> 
@@ -144,20 +149,13 @@
 </html>
 
 
-<!--        LECTURE NOTES:
-
-            Daynamic changes:
-            <h2>Clicked on image: {{ name }}</h2>
-            
+<!--        LECTURE NOTES:            
             2 ways to use v-bind:
             <h2 v-bind:class="myClassName">The cohort is: {{ name }}</h2>
             <h2 :class="myClassName">The cohort is: {{ name }}</h2>
-            if or else conditional
-            <h2 v-if="seen">Can you see me?</h2>
-            <h2 v-else>I am the else</h2> 
-            <ul>
-
+            
             2 ways to use v-on:
+            <ul>
             <li v-for="city in cities" v-on:click="petesMethod">{{city.name}}, {{city.country}}</li>
             <li v-for="city in cities" @click="petesMethod(city.name)">
                     {{city.name}}, {{city.country}}
@@ -165,7 +163,5 @@
             </ul>
 
             use javascript directly:
-            <p>HELLO WORLD</p>
-            <h2>2*2 = {{ 2*2 }}</h2>
             <h2>Capitalise {{ "hello".toUpperCase() }}</h2>
             -->
