@@ -42,7 +42,6 @@
                     </form>
                     <div class="choose-file">
                         <div>
-
                             <input type="file" name="image" id="image" accept="image/*" @change="handleFileChange" class="inputfile" >
                             <label for="image" id="upload">
                                 <i class="fas fa-upload"></i>
@@ -80,6 +79,10 @@
                         </div>
                     </article>
                     <!-- END OF SINGLE IMAGE -->
+                </div>
+                <div class="more-btn">
+                    <button v-if="more" @click="getMore">load more</button>
+                    <h2 v-else>That's all!</h2> 
                 </div>
             </section>
             <!-- END OF IMAGE GALLERY  -->

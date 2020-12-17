@@ -373,6 +373,33 @@ Images Section
     color: var(--bright);
 }
 
+.more-btn {
+    text-align: center;
+}
+
+.more-btn button {
+    width: 150px;
+    padding: 0.4rem 0.5rem;
+    font-size: 1.5rem;
+    font-family: var(--ff-head);
+    color: var(--bright);
+    background-color: #4bb2dc;
+    border-radius: var(--radius);
+    box-shadow: var(--light-shadow);
+    margin-bottom: 1rem;
+    outline: none;
+    border: none;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>🌈</text></svg>")
+            16 0,
+        auto;
+    transition: var(--transition);
+}
+
+.more-btn button:hover {
+    background-color: #57bfe8;
+    transform: scale(1.02);
+}
+
 @media screen and (min-width: 768px) {
     .images-center {
         display: grid;

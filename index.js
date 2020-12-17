@@ -72,6 +72,19 @@ app.get('/modal', (req, res) => {
         });
 });
 
+// Open Modal
+app.get('/more', (req, res) => {
+    console.log('GET request to /more');
+    const lastid = req.query.lastid;
+    db.getMoreImages(lastid)
+        .then(({ rows }) => {
+            res.json(rows);
+        })
+        .catch((err) => {
+            console.log('error in db.getMoreImages: ', err);
+        });
+});
+
 app.use(express.static('public'));
 
 if (require.main == module) {
