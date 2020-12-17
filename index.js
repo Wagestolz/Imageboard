@@ -73,6 +73,8 @@ app.get('/modal', (req, res) => {
 
 app.use(express.static('public'));
 
-app.listen(8080, () => {
-    console.log('Imageboard up and running');
-});
+if (require.main == module) {
+    app.listen(process.env.PORT || 8080, () => {
+        console.log('Imageboard up and running');
+    });
+}

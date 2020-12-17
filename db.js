@@ -8,6 +8,13 @@ module.exports.getImages = () => {
     return db.query(`SELECT * FROM images ORDER BY id DESC LIMIT 9`);
 };
 
+module.exports.getMoreImages = (lastId) => {
+    return db.query(
+        `SELECT url, title, id, (SELECT id FROM images ORDER BY id AS LIMIT 1) AS "lowestId" FROM images WHERE id < $1 ORDER BY id DESC LIMIT 10;`,
+        [lastId]
+    );
+};
+
 module.exports.storeNewImage = (upUrl, upUser, UpTitle, UpDescription) => {
     return db.query(
         `INSERT INTO images (url, username, title, description) VALUES ($1, $2, $3, $4)`,
