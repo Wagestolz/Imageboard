@@ -21,6 +21,7 @@
             };
         },
         mounted: function () {
+            console.log('Vue Modal component mounted');
             var self = this;
             axios
                 .get('/modal', { params: { id: this.clickId } })
@@ -52,7 +53,7 @@
         },
         // "mounted" lifecycle hook
         mounted: function () {
-            console.log('Vue component mounted');
+            console.log('Vue instance mounted');
             var self = this;
             axios
                 .get('/images')

@@ -325,6 +325,7 @@ Images Section
     align-items: start;
     box-shadow: var(--dark-shadow);
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .image:hover {
