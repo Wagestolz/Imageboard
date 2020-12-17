@@ -51,7 +51,7 @@
             images: [],
             clickId: null,
             lowestId: null,
-            more: false,
+            more: true,
         },
         // "mounted" lifecycle hook
         mounted: function () {
@@ -65,9 +65,6 @@
                 .catch(function (error) {
                     console.log('error at GET /', error);
                 });
-            if (self.images.length == 9) {
-                self.more = true;
-            }
         },
         methods: {
             handleFileChange: function (e) {
@@ -101,26 +98,30 @@
             getMore: function () {
                 var self = this;
                 var lastItemID = this.images[this.images.length - 1].id;
-                axios
-                    .get('/more', {
-                        params: {
-                            lastid: lastItemID,
-                        },
-                    })
-                    .then(function (res) {
-                        self.images.push(...res.data);
-                        self.lowestId = res.data[0].lowestId;
-                        if (
-                            self.images[self.images.length - 1].id ==
-                            self.lowestId
-                        ) {
-                            console.log("that's all I have to render");
-                            self.more = false;
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log('error at GET /', error);
-                    });
+                if (self.images.length == 9) {
+                    axios
+                        .get('/more', {
+                            params: {
+                                lastid: lastItemID,
+                            },
+                        })
+                        .then(function (res) {
+                            self.images.push(...res.data);
+                            self.lowestId = res.data[0].lowestId;
+                            if (
+                                self.images[self.images.length - 1].id ==
+                                self.lowestId
+                            ) {
+                                console.log("that's all I have to render");
+                                self.more = false;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log('error at GET /', error);
+                        });
+                } else {
+                    self.more = false;
+                }
             },
         },
     });
