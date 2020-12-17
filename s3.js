@@ -9,7 +9,8 @@ if (process.env.NODE_ENV == 'production') {
 }
 
 const s3 = new aws.S3(
-    process.env.SESSION_SECRET || {
+    // process.env.SESSION_SECRET ||
+    {
         accessKeyId: secrets.AWS_KEY,
         secretAccessKey: secrets.AWS_SECRET,
     }
