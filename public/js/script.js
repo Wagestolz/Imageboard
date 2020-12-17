@@ -3,8 +3,61 @@
 (function () {
     console.log('sanity check');
 
+    Vue.component('comment-component', {
+        template: '#comment-template',
+        props: ['clickId'],
+        data: function () {
+            // data is a function for component (own data set)
+            return {
+                comments: [],
+                username: '',
+                comment: '',
+                empty: false,
+            };
+        },
+        mounted: function () {
+            console.log('Vue Comment component mounted');
+            var self = this;
+            self.empty = false;
+            axios // HTTP request to retrieve the all comments
+                // GET to /comments/:imageId
+                .get(`/comments/:${this.clickId}`, {
+                    params: { imageId: this.clickId },
+                })
+                .then(function (res) {
+                    console.log('GET to /comments/:imageId worked!');
+                    console.log('res.data', res.data);
+                    if (res.data.length > 0) {
+                        self.comments = res.data;
+                    } else {
+                        self.empty = true;
+                    }
+                })
+                .catch(function (error) {
+                    console.log('error at GET /comments/:imageId', error);
+                });
+        },
+        methods: {
+            postComment: function () {
+                var self = this;
+                axios
+                    .post('/comment', {
+                        username: this.username,
+                        comment: this.comment,
+                        imageId: this.clickId,
+                    })
+                    .then(function (res) {
+                        self.comments.unshift(res.data);
+                    })
+                    .catch(function (error) {
+                        console.log('error in POST /comment', error);
+                    });
+            },
+        },
+    });
+
     Vue.component('modal-component', {
-        template: '#template', // the id of the script tag below vue instance
+        template: '#modal-template', // the id of the script tag below vue instance
         props: ['clickId'],
         // props: ['sayGreeting', 'id', 'url', 'title', 'description'],
         data: function () {
@@ -89,7 +142,6 @@
                     });
             },
             setImageId: function (e, id) {
-                console.log('running', id);
                 this.clickId = id;
             },
             closeMe: function () {
@@ -98,7 +150,7 @@
             getMore: function () {
                 var self = this;
                 var lastItemID = this.images[this.images.length - 1].id;
-                if (self.images.length == 9) {
+                if (self.images.length > 8) {
                     axios
                         .get('/more', {
                             params: {
@@ -112,15 +164,14 @@
                                 self.images[self.images.length - 1].id ==
                                 self.lowestId
                             ) {
-                                console.log("that's all I have to render");
-                                self.more = false;
+                                self.more = false; // hide more button
                             }
                         })
                         .catch(function (error) {
                             console.log('error at GET /', error);
                         });
                 } else {
-                    self.more = false;
+                    self.more = false; // don't render button until at least 9 images uploaded
                 }
             },
         },

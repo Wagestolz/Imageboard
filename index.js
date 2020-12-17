@@ -7,6 +7,8 @@ const path = require('path');
 const s3 = require('./s3');
 const { s3Url } = require('./config.json');
 
+app.use(express.json());
+
 // boilerplate setup multer
 // multer needs to determin the PATH and FILENAME to use when saving files
 const diskStorage = multer.diskStorage({
@@ -59,6 +61,19 @@ app.post('/upload', uploader.single('image'), s3.upload, (req, res) => {
     }
 });
 
+// load more images
+app.get('/more', (req, res) => {
+    console.log('GET request to /more');
+    const lastid = req.query.lastid;
+    db.getMoreImages(lastid)
+        .then(({ rows }) => {
+            res.json(rows);
+        })
+        .catch((err) => {
+            console.log('error in db.getMoreImages: ', err);
+        });
+});
+
 // Open Modal
 app.get('/modal', (req, res) => {
     console.log('GET request to /modal');
@@ -72,17 +87,32 @@ app.get('/modal', (req, res) => {
         });
 });
 
-// Open Modal
-app.get('/more', (req, res) => {
-    console.log('GET request to /more');
-    const lastid = req.query.lastid;
-    db.getMoreImages(lastid)
+// Get comments
+app.get('/comments/:imageId', (req, res) => {
+    console.log('GET request to /comments/:imageId');
+    db.getComments(req.query.imageId)
         .then(({ rows }) => {
             res.json(rows);
         })
         .catch((err) => {
-            console.log('error in db.getMoreImages: ', err);
+            console.log('error in db.getComments: ', err);
         });
+});
+
+// Post a comment
+app.post('/comment', (req, res) => {
+    const { comment, username, imageId } = req.body;
+    if (comment == '' || username == '') {
+        res.sendStatus(418);
+    } else {
+        db.insertComment(comment, username, imageId)
+            .then(({ rows }) => {
+                res.json(rows[0]);
+            })
+            .catch((err) => {
+                console.log('error in db.insertComment: ', err);
+            });
+    }
 });
 
 app.use(express.static('public'));

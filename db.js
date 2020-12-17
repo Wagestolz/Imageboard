@@ -31,3 +31,16 @@ module.exports.storeNewImage = (upUrl, upUser, UpTitle, UpDescription) => {
 module.exports.getModalImage = (id) => {
     return db.query(`SELECT * FROM images WHERE id = $1`, [id]);
 };
+
+module.exports.getComments = (imageId) => {
+    return db.query(`SELECT * FROM comments WHERE image_id = $1`, [imageId]);
+};
+
+module.exports.insertComment = (comment, username, imageId) => {
+    return db.query(
+        `INSERT INTO comments (comment, username, image_id) 
+        VALUES ($1, $2, $3)
+        RETURNING *`,
+        [comment, username, imageId]
+    );
+};
