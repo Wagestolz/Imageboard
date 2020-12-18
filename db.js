@@ -31,13 +31,16 @@ module.exports.storeNewImage = (upUrl, upUser, UpTitle, UpDescription) => {
 
 module.exports.getModalImage = (id) => {
     return db.query(
-        `SELECT *, 
+        `SELECT images.id, images.url, images.username, images.title, images.description, images.created_at,
     (SELECT id FROM images WHERE id < $1 ORDER BY id DESC LIMIT 1)
     AS "prevId",
     (SELECT id FROM images WHERE id > $1 ORDER BY id ASC LIMIT 1)
-    AS "nextId"
+    AS "nextId",
+    imagetags.tag1, imagetags.tag2, imagetags.tag3 
     FROM images 
-    WHERE id = $1`,
+    LEFT JOIN imagetags 
+    on images.id = imagetags.image_id 
+    WHERE images.id = $1`,
         [id]
     );
 };
@@ -52,5 +55,14 @@ module.exports.insertComment = (comment, username, imageId) => {
         VALUES ($1, $2, $3)
         RETURNING *`,
         [comment, username, imageId]
+    );
+};
+
+module.exports.insertTags = (tag1, tag2, tag3, imageId) => {
+    return db.query(
+        `INSERT INTO imagetags (tag1, tag2, tag3, image_id) 
+        VALUES ($1, $2, $3, $4) 
+        RETURNING *`,
+        [tag1, tag2, tag3, imageId]
     );
 };

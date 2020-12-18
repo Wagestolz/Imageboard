@@ -34,18 +34,20 @@
         methods: {
             postComment: function () {
                 var self = this;
-                axios
-                    .post('/comment', {
-                        username: this.username,
-                        comment: this.comment,
-                        imageId: this.clickId,
-                    })
-                    .then(function (res) {
-                        self.comments.unshift(res.data);
-                    })
-                    .catch(function (error) {
-                        console.log('error in POST /comment', error);
-                    });
+                if (self.comment && self.username) {
+                    axios
+                        .post('/comment', {
+                            username: this.username,
+                            comment: this.comment,
+                            imageId: this.clickId,
+                        })
+                        .then(function (res) {
+                            self.comments.unshift(res.data);
+                        })
+                        .catch(function (error) {
+                            console.log('error in POST /comment', error);
+                        });
+                }
             },
         },
     });
@@ -64,6 +66,12 @@
                     title: '',
                     description: '',
                     created_at: '',
+                    tag1: null,
+                    tag2: null,
+                    tag3: null,
+                    tags: [],
+                    nextId: '',
+                    prevId: '',
                 },
             };
         },
@@ -83,9 +91,10 @@
                     .get('/modal', { params: { id: self.clickId } })
                     .then(function (res) {
                         if (res.data.notfound) {
+                            console.log(res.data.notfound);
                             self.closeModal();
                         }
-                        self.image = res.data[0]; // data property holds body of response
+                        self.image = res.data[0];
                     })
                     .catch(function (error) {
                         console.log('error at GET /modal', error);
@@ -103,9 +112,12 @@
             image: null,
             inputField: '',
             images: [],
+            tagInput: '',
+            tags: [],
             clickId: location.hash.slice(1),
             lowestId: null,
             more: true,
+            success: false,
         },
         // "mounted" lifecycle hook
         mounted: function () {
@@ -127,6 +139,7 @@
             handleFileChange: function (e) {
                 this.image = e.target.files[0];
                 this.inputField = e.target.files[0].name;
+                this.success = false;
             },
             handleUpload: function (e) {
                 e.preventDefault();
@@ -136,21 +149,55 @@
                 formData.append('image', this.image);
                 formData.append('user', this.user);
                 formData.append('description', this.description);
-                axios
-                    .post('/upload', formData)
-                    .then(function (res) {
-                        self.images.unshift(res.data);
-                    })
-                    .catch(function (error) {
-                        console.log('error in POST /upload', error);
-                    });
+                if (this.image) {
+                    axios
+                        .post('/upload', formData)
+                        .then(function (res) {
+                            self.images.unshift(res.data);
+                            self.successHandler(self);
+                            return self.addTags(res.data.id);
+                        })
+                        .catch(function (error) {
+                            console.log('error in POST /upload', error);
+                        });
+                }
             },
-            // setImageId: function (e, id) {
-            //     this.clickId = id;
-            // },
             closeMe: function () {
                 this.clickId = null;
                 history.pushState({}, '', '/'); // reset link
+            },
+            tagList: function () {
+                if (this.tagInput.length == 0) {
+                    console.log('empty tag');
+                    this.tagInput = '';
+                } else if (this.tags.length < 3) {
+                    this.tags.push(this.tagInput);
+                    this.tagInput = '';
+                }
+            },
+            deleteTag: function (index) {
+                this.tags.splice(index, 1);
+            },
+            addTags: function (imageId) {
+                var self = this;
+                if (this.tags.length > 0) {
+                    axios
+                        .post('/tags', { tags: this.tags, id: imageId })
+                        .then(function (res) {
+                            console.log('addTags resolved! res:', res);
+                            self.tags = [];
+                            // self.images.unshift(res.data);
+                        })
+                        .catch(function (error) {
+                            console.log('error in POST /tags', error);
+                        });
+                }
+            },
+            successHandler: function (self) {
+                self.title = self.user = self.description = self.inputField =
+                    '';
+                self.image = null;
+                self.success = true;
             },
             getMore: function () {
                 var self = this;

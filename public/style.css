@@ -297,6 +297,12 @@ form {
     }
 }
 
+.tags-container {
+    font-family: var(--ff-head);
+    color: var(--bright);
+    background-color: rgba(87, 191, 232, 0.5);
+}
+
 /*
 =============== 
 Images Section
@@ -345,6 +351,7 @@ Images Section
 .image-info {
     height: 100%;
     min-height: 100px;
+    /* max-width: 495px; */
     padding: 1rem;
     background: linear-gradient(
         0deg,
@@ -356,10 +363,14 @@ Images Section
 .image-info h3 {
     font-family: var(--ff-head);
     font-size: 2rem;
+    /* max-width: 495px; */
+    overflow: hidden;
 }
 .image-info p {
     font-size: 1rem;
     color: var(--bright);
+    /* max-width: 495px; */
+    overflow: hidden;
 }
 .image-footer {
     background: var(--pink);
