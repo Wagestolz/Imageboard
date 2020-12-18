@@ -328,6 +328,9 @@ Images Section
     cursor: pointer;
 }
 
+.image a {
+    height: 360px;
+}
 .image:hover {
     transform: scale(1.02);
 }
@@ -441,7 +444,7 @@ Modal
 
 .modal-container {
     padding-top: 2rem;
-    width: 85vw;
+    width: 88vw;
     max-width: 600px;
     display: grid;
     grid-template-rows: auto auto 1fr;
@@ -487,7 +490,7 @@ Modal
         top: 20px;
     }
     .modal-container img {
-        margin-top: 2rem;
+        margin-top: 3rem;
     }
 }
 

@@ -28,7 +28,7 @@
                         <div class="form-item">
                             <h2 class="title" >Spotted celebs wearing Aloha?</h2>
                             <h3 class="title">Upload it here!</h3> 
-                            <input class="field" type="text" name="title" v-model="title" placeholder="Title" required>
+                            <input class="field" type="text" name="title" v-model="title" placeholder="Image Title" required>
                         </div>
                         <div class="form-item">
                             <input class="field" type="text" name="description" v-model="description" placeholder="Description" required>
@@ -45,7 +45,7 @@
                             <input type="file" name="image" id="image" accept="image/*" @change="handleFileChange" class="inputfile" >
                             <label for="image" id="upload">
                                 <i class="fas fa-upload"></i>
-                                {{inputField || 'Choose File'}}</label>
+                                {{inputField || 'Choose Image'}}</label>
                         </div>
                     </div>
                 </div>
@@ -60,11 +60,14 @@
                 <div class="images-center">
                     <!-- SINGLE IMAGE -->
                     <article class="image" v-for="image in images" v-bind:key="image.id">
-                        <img
-                        :src="image.url"
-                        :alt="image.id"
-                        @click="setImageId($event, image.id)"
-                        />
+                        <a :href="'#'+image.id">                     
+                            <img
+                            :href="'#'+image.id"
+                            :src="image.url"
+                            :alt="image.id"
+                            />
+                            <!-- @click="setImageId($event, image.id)" -->
+                        </a>
                         <!-- IMAGE INFO -->
                         <div class="image-info">
                             <h3>{{image.title || 'Another Legend'}}</h3>
@@ -140,8 +143,7 @@
                 </div>
             </div> 
         </script>
-        <!-- Comments-Component Script Tag -->
-
+        <!-- End of Comments-Component Script Tag -->
         <script src="/js/vue.js"></script>
         <script src="/js/axios.min.js"></script>
         <script src="/js/script.js"></script>

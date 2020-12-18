@@ -50,7 +50,6 @@ app.post('/upload', uploader.single('image'), s3.upload, (req, res) => {
     if (req.file) {
         db.storeNewImage(url, user, title, description)
             .then(({ rows }) => {
-                // console.log('rows: ', rows[0]);
                 res.json(rows[0]);
             })
             .catch((err) => {
@@ -80,7 +79,11 @@ app.get('/modal', (req, res) => {
     const id = req.query.id;
     db.getModalImage(id)
         .then(({ rows }) => {
-            res.json(rows);
+            if (rows.length == 0) {
+                res.send({ notfound: true });
+            } else {
+                res.json(rows);
+            }
         })
         .catch((err) => {
             console.log('error in db.getModalImage: ', err);

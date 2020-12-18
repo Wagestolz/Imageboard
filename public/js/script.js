@@ -1,8 +1,4 @@
-// const { axios } = require('aws-sdk');
-
 (function () {
-    console.log('sanity check');
-
     Vue.component('comment-component', {
         template: '#comment-template',
         props: ['clickId'],
@@ -25,8 +21,6 @@
                     params: { imageId: this.clickId },
                 })
                 .then(function (res) {
-                    console.log('GET to /comments/:imageId worked!');
-                    console.log('res.data', res.data);
                     if (res.data.length > 0) {
                         self.comments = res.data;
                     } else {
@@ -73,22 +67,29 @@
                 },
             };
         },
+        watch: {
+            clickId: 'getModal',
+        },
         mounted: function () {
-            console.log('Vue Modal component mounted');
-            var self = this;
-            axios
-                .get('/modal', { params: { id: this.clickId } })
-                .then(function (res) {
-                    self.image = res.data[0]; // data property holds body of response
-                })
-                .catch(function (error) {
-                    console.log('error at GET /modal', error);
-                });
+            this.getModal();
         },
         methods: {
             closeModal: function () {
-                console.log('about to emit an event from component');
                 this.$emit('close');
+            },
+            getModal: function () {
+                var self = this;
+                axios
+                    .get('/modal', { params: { id: self.clickId } })
+                    .then(function (res) {
+                        if (res.data.notfound) {
+                            self.closeModal();
+                        }
+                        self.image = res.data[0]; // data property holds body of response
+                    })
+                    .catch(function (error) {
+                        console.log('error at GET /modal', error);
+                    });
             },
         },
     });
@@ -102,7 +103,7 @@
             image: null,
             inputField: '',
             images: [],
-            clickId: null,
+            clickId: location.hash.slice(1),
             lowestId: null,
             more: true,
         },
@@ -118,6 +119,9 @@
                 .catch(function (error) {
                     console.log('error at GET /', error);
                 });
+            addEventListener('hashchange', function () {
+                self.clickId = location.hash.slice(1); // for open Modal
+            });
         },
         methods: {
             handleFileChange: function (e) {
@@ -141,11 +145,12 @@
                         console.log('error in POST /upload', error);
                     });
             },
-            setImageId: function (e, id) {
-                this.clickId = id;
-            },
+            // setImageId: function (e, id) {
+            //     this.clickId = id;
+            // },
             closeMe: function () {
                 this.clickId = null;
+                history.pushState({}, '', '/'); // reset link
             },
             getMore: function () {
                 var self = this;
