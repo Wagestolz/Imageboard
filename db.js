@@ -11,7 +11,8 @@ module.exports.getImages = () => {
 module.exports.getMoreImages = (lastId) => {
     return db.query(
         `SELECT *, (SELECT id FROM images ORDER BY id ASC LIMIT 1) 
-        AS "lowestId" FROM images 
+        AS "lowestId" 
+        FROM images 
         WHERE id < $1 
         ORDER BY id DESC 
         LIMIT 9`,
@@ -29,7 +30,16 @@ module.exports.storeNewImage = (upUrl, upUser, UpTitle, UpDescription) => {
 };
 
 module.exports.getModalImage = (id) => {
-    return db.query(`SELECT * FROM images WHERE id = $1`, [id]);
+    return db.query(
+        `SELECT *, 
+    (SELECT id FROM images WHERE id < $1 ORDER BY id DESC LIMIT 1)
+    AS "prevId",
+    (SELECT id FROM images WHERE id > $1 ORDER BY id ASC LIMIT 1)
+    AS "nextId"
+    FROM images 
+    WHERE id = $1`,
+        [id]
+    );
 };
 
 module.exports.getComments = (imageId) => {

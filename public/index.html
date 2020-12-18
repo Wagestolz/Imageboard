@@ -62,7 +62,6 @@
                     <article class="image" v-for="image in images" v-bind:key="image.id">
                         <a :href="'#'+image.id">                     
                             <img
-                            :href="'#'+image.id"
                             :src="image.url"
                             :alt="image.id"
                             />
@@ -102,6 +101,8 @@
                     <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
                     <img :src="image.url" :alt="image.id">
                     <div class="modal-title-container">
+                        <a v-if="image.nextId" :href="'#'+image.nextId"><i class="fas fa-arrow-left"></i></a>
+                        <a v-if="image.prevId" :href="'#'+image.prevId"><i class="fas fa-arrow-right"></i></a>
                         <h2>{{image.title || 'Another Legend'}}</h2>
                         <h3>{{image.description || 'Look at this beauty'}}</h3>
                         <h4>uploaded by <span>{{image.username || 'unknown'}}</span> on <span>{{image.created_at.substring(0, 10)}}</span> 
