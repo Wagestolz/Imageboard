@@ -5,7 +5,27 @@ const db = spicedPg(
 ); //handles communication between node and sql
 
 module.exports.getImages = () => {
-    return db.query(`SELECT * FROM images ORDER BY id DESC LIMIT 9`);
+    return db.query(`SELECT images.id, images.url, images.username, images.title, images.description, images.created_at, 
+    imagetags.tag1, imagetags.tag2, imagetags.tag3 
+    FROM images 
+    LEFT JOIN imagetags 
+    on images.id = imagetags.image_id 
+    ORDER BY id 
+    DESC LIMIT 9`);
+};
+
+module.exports.getTaggdImages = (tag) => {
+    return db.query(
+        `SELECT images.id, images.url, images.username, images.title, images.description, images.created_at, 
+        imagetags.tag1, imagetags.tag2, imagetags.tag3 
+        FROM images 
+        LEFT JOIN imagetags 
+        on images.id = imagetags.image_id 
+        WHERE imagetags.tag1 = $1 
+        OR imagetags.tag2 = $1 
+        OR imagetags.tag3 = $1`,
+        [tag]
+    );
 };
 
 module.exports.getMoreImages = (lastId) => {

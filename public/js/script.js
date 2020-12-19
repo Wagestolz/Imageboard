@@ -69,7 +69,6 @@
                     tag1: null,
                     tag2: null,
                     tag3: null,
-                    tags: [],
                     nextId: '',
                     prevId: '',
                 },
@@ -100,6 +99,10 @@
                         console.log('error at GET /modal', error);
                     });
             },
+            sameTagImages: function (clickedTag) {
+                this.closeModal();
+                this.$emit('taglookup', clickedTag);
+            },
         },
     });
 
@@ -114,6 +117,7 @@
             images: [],
             tagInput: '',
             tags: [],
+            filter: '',
             clickId: location.hash.slice(1),
             lowestId: null,
             more: true,
@@ -171,7 +175,7 @@
                     console.log('empty tag');
                     this.tagInput = '';
                 } else if (this.tags.length < 3) {
-                    this.tags.push(this.tagInput);
+                    this.tags.push(this.tagInput.toLowerCase());
                     this.tagInput = '';
                 }
             },
@@ -198,6 +202,29 @@
                     '';
                 self.image = null;
                 self.success = true;
+            },
+            tagFilter: function (clickedTag) {
+                var self = this;
+                axios
+                    .get(`/images/:${clickedTag}`, {
+                        params: { tag: clickedTag.toLowerCase() },
+                    })
+                    .then(function (res) {
+                        console.log('tagfilter resolved: ', res);
+                        self.images = res.data;
+                        // self.images = res.data; // data property holds body of response
+                    })
+                    .catch(function (error) {
+                        console.log('error at GET /', error);
+                    });
+            },
+            filterByTag: function (tagInput) {
+                this.tagFilter(tagInput);
+                this.filter = '';
+            },
+            resetFilter: function () {
+                this.tagFilter('');
+                this.filter = '';
             },
             getMore: function () {
                 var self = this;

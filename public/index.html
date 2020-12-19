@@ -19,7 +19,7 @@
         <title>🏄‍♂️😎 Celebs in Aloha</title>
     </head>
     <body>
-        <div id="main" v-cloak>
+        <div id="main" v-cloak >
             <!-- IMAGE UPLOADER -->
             <!-- Form-->
             <section class="form-container">
@@ -64,6 +64,12 @@
             <section class="images-container">
                 <div class="title">
                     <h1>Celebs in Aloha</h1>
+                    <div class="form-item">
+                        <input class="field" type="text" maxlength="15" id="tag-filter" name="tag-filter" v-on:keyup.enter="filterByTag(filter)" v-model="filter" placeholder="Filter by Tag">
+                    </div>
+                    <div class="form-item">
+                    <button class="upload-btn" @click="resetFilter">Reset</button>
+                    </div>
                     <h2>🏄‍♂️😎</h2>
                 </div>
                 <div class="images-center">
@@ -83,10 +89,9 @@
                         </div>
                         <!-- IMAGE FOOTER -->
                         <div class="image-footer">
-                            <span><i class="fab fa-twitter"></i></span>
-                            <span><i class="fab fa-facebook"></i></span>
-                            <span><i class="fab fa-linkedin"></i></span>
-                            <span><i class="fab fa-instagram"></i></span>
+                            <span>{{image.tag1}}</span>
+                            <span>{{image.tag2}}</span>
+                            <span>{{image.tag3}}</span>
                         </div>
                     </article>
                     <!-- END OF SINGLE IMAGE -->
@@ -98,7 +103,7 @@
             </section>
             <!-- END OF IMAGE GALLERY  -->
             <!-- MODAL COMPONENT -->
-            <modal-component v-if="clickId" :click-id="clickId" @close="closeMe">
+            <modal-component v-if="clickId" :click-id="clickId" @taglookup="tagFilter" @close="closeMe" >
             </modal-component>
             <!-- MODAL COMPONENT -->
         </div>
@@ -110,9 +115,9 @@
                     <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
                     <img :src="image.url" :alt="image.id">
                     <div class="modal-title-container">
-                        <h2>{{image.tag1}}</h2>
-                        <h2>{{image.tag2}}</h2>
-                        <h2>{{image.tag3}}</h2>
+                        <h2 @click="sameTagImages(image.tag1)">{{image.tag1}}</h2>
+                        <h2 @click="sameTagImages(image.tag2)">{{image.tag2}}</h2>
+                        <h2 @click="sameTagImages(image.tag3)">{{image.tag3}}</h2>
                         <a v-if="image.nextId" :href="'#'+image.nextId"><i class="fas fa-arrow-left"></i></a>
                         <a v-if="image.prevId" :href="'#'+image.prevId"><i class="fas fa-arrow-right"></i></a>
                         <h2>{{image.title || 'Another Legend'}}</h2>
@@ -145,7 +150,6 @@
                     </div>
                 </div>
                 <div class="posted-comments">
-                    <!-- <h3>User Comments:</h3> -->
                     <div class="posted-comments-center">
                         <h4 v-if="empty">Be the first to comment!</h4>
                         <div v-for="each in comments" class="single-comments">

@@ -128,13 +128,13 @@ app.post('/tags', (req, res) => {
         tag2,
         tag3 = null;
     if (tags[0]) {
-        tag1 = tags[0];
+        tag1 = tags[0].toLowerCase();
     }
     if (tags[1]) {
-        tag2 = tags[1];
+        tag2 = tags[1].toLowerCase();
     }
     if (tags[2]) {
-        tag3 = tags[2];
+        tag3 = tags[2].toLowerCase();
     }
     db.insertTags(tag1, tag2, tag3, id)
         .then(({ rows }) => {
@@ -143,35 +143,28 @@ app.post('/tags', (req, res) => {
         .catch((err) => {
             console.log('error in db.insertTags: ', err);
         });
-    // db.insertTags(tags[0], id)
-    //     .then(() => {
-    //         console.log('insert for first tag resolved');
-    //         if (tags[1]) {
-    //             return db.insertTags(tags[1], id).then(() => {
-    //                 console.log('insert for second tag resolved');
-    //                 if (tags[2]) {
-    //                     console.log('insert for third tag resolved');
-    //                     db.insertTags(tags[2], id).then(res.sendStatus(200));
-    //                 } else {
-    //                     res.sendStatus(200);
-    //                 }
-    //             });
-    //         } else {
-    //             res.sendStatus(200);
-    //         }
-    //     })
-    //     .catch((err) => {
-    //         console.log('error in db.insertTags: ', err);
-    //     });
-    // for (let i = 0; i < tags.length - 1; i++) {
-    //     db.insertTags(tags[i], id)
-    //         .then(({ rows }) => {
-    //             console.log('rows: ', rows);
-    //         })
-    //         .catch((err) => {
-    //             console.log('error in db.insertTags: ', err);
-    //         });
-    // }
+});
+
+// Get Imagess filtered by Tag
+app.get('/images/:tag', (req, res) => {
+    console.log('GET request to /comments/:tag');
+    if (!req.query.tag) {
+        db.getImages()
+            .then(({ rows }) => {
+                res.json(rows);
+            })
+            .catch((err) => {
+                console.log('error in db.getImages: ', err);
+            });
+    } else {
+        db.getTaggdImages(req.query.tag)
+            .then(({ rows }) => {
+                res.json(rows);
+            })
+            .catch((err) => {
+                console.log('error in db.getTaggdImages: ', err);
+            });
+    }
 });
 
 app.use(express.static('public'));

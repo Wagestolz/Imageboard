@@ -376,8 +376,9 @@ Images Section
     background: var(--pink);
     padding: 0.5rem 1rem;
     width: 100%;
+    min-height: 40px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     justify-items: center;
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
