@@ -197,7 +197,7 @@ app.get('/update', (req, res) => {
 
 // url download
 app.get('/url', (req, res) => {
-    const path = __dirname + `/uploads/${Math.random()}.png`;
+    const path = __dirname + `/public/img/${Math.random()}.png`;
     const { title, user, description, url } = req.query;
     let writer = fs.createWriteStream(path);
     writer
