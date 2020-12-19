@@ -242,7 +242,10 @@
                         .then(function (res) {
                             console.log('addTags resolved! res:', res);
                             self.tags = [];
-                            // self.images.unshift(res.data);
+                            // let index = self.images.findIndex(
+                            //     (x) => x.id === imageId
+                            // );
+                            // this.images.splice(index, 1);
                         })
                         .catch(function (error) {
                             console.log('error in POST /tags', error);
