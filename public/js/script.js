@@ -125,6 +125,7 @@
             success: false,
             updatig: null,
             updateMessage: false,
+            imageUrl: '',
         },
         // "created" lifecycle hook
         created: function () {
@@ -159,14 +160,17 @@
             handleUpload: function (e) {
                 e.preventDefault();
                 var self = this;
-                var formData = new FormData();
-                formData.append('title', this.title);
-                formData.append('image', this.image);
-                formData.append('user', this.user);
-                formData.append('description', this.description);
-                if (this.image) {
+                // if url given
+                if (this.image.startsWith('https://')) {
                     axios
-                        .post('/upload', formData)
+                        .get('/url', {
+                            params: {
+                                url: this.image,
+                                title: this.title,
+                                user: this.user,
+                                description: this.description,
+                            },
+                        })
                         .then(function (res) {
                             self.images.unshift(res.data);
                             self.successHandler(self);
@@ -174,8 +178,29 @@
                             return self.addTags(res.data.id);
                         })
                         .catch(function (error) {
-                            console.log('error in POST /upload', error);
+                            console.log('error in GET /url', error);
                         });
+                }
+                // if image uploaded
+                else {
+                    var formData = new FormData();
+                    formData.append('title', this.title);
+                    formData.append('image', this.image);
+                    formData.append('user', this.user);
+                    formData.append('description', this.description);
+                    if (this.image) {
+                        axios
+                            .post('/upload', formData)
+                            .then(function (res) {
+                                self.images.unshift(res.data);
+                                self.successHandler(self);
+                                self.newestId = res.data.id;
+                                return self.addTags(res.data.id);
+                            })
+                            .catch(function (error) {
+                                console.log('error in POST /upload', error);
+                            });
+                    }
                 }
             },
             closeMe: function () {
@@ -213,6 +238,7 @@
                 self.title = self.user = self.description = self.inputField =
                     '';
                 self.image = null;
+                self.imageUrl = '';
                 self.success = true;
             },
             tagFilter: function (clickedTag) {
@@ -270,7 +296,7 @@
                 var self = this;
                 this.updating = setInterval(() => {
                     axios
-                        .get('/update', {})
+                        .get('/update')
                         .then(function (res) {
                             if (res.data[0].id > self.newestId) {
                                 self.updateMessage = true;
@@ -280,6 +306,14 @@
                             console.log('error in GET /update', error);
                         });
                 }, 5000);
+            },
+            urlUpload: function () {
+                if (this.imageUrl.startsWith('https://')) {
+                    this.inputField = this.imageUrl.substring(0, 20) + '...';
+                    this.image = this.imageUrl;
+                    this.imageUrl = '';
+                    this.success = false;
+                }
             },
         },
     });

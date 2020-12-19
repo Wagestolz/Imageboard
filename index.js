@@ -6,6 +6,8 @@ const uidSafe = require('uid-safe'); // generating unique names for uploaded fil
 const path = require('path');
 const s3 = require('./s3');
 const { s3Url } = require('./config.json');
+const fs = require('fs');
+const https = require('https');
 
 app.use(express.json());
 app.use(
@@ -167,6 +169,7 @@ app.get('/images/:tag', (req, res) => {
     }
 });
 
+// Notify when new images available
 app.get('/update', (req, res) => {
     db.checkUpdate()
         .then(({ rows }) => {
@@ -175,6 +178,35 @@ app.get('/update', (req, res) => {
         .catch((err) => {
             console.log('error in db.checkUpdate: ', err);
         });
+});
+
+// url download
+app.get('/url', (req, res) => {
+    const path = __dirname + `/uploads/${Math.random()}.png`;
+    const { title, user, description, url } = req.query;
+    let writer = fs.createWriteStream(path);
+    writer
+        .on('open', function () {
+            return https.get(url, function (res) {
+                res.on('error', function (err) {
+                    console.log('error in https.get:', err);
+                });
+                res.pipe(writer);
+            });
+        })
+        .on('error', function (err) {
+            console.log('error in writer.on:', err);
+        });
+    writer.on('finish', function () {
+        console.log('uploaded image to server');
+        db.storeNewImage(url, user, title, description)
+            .then(({ rows }) => {
+                res.json(rows[0]);
+            })
+            .catch((err) => {
+                console.log('error in db.storeNewImage: ', err);
+            });
+    });
 });
 
 app.use(express.static('public'));

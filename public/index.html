@@ -43,6 +43,9 @@
                     </form>
                     <div class="choose-file">
                         <div>
+                            <div class="form-item">
+                            <input class="field" type="text" id="image-url" name="url" v-on:keyup.enter="urlUpload" v-model="imageUrl" placeholder="or enter URL">
+                            </div>
                             <input type="file" name="image" id="image" accept="image/*" @change="handleFileChange" class="inputfile" >
                             <label for="image" id="upload">
                                 <i class="fas fa-upload"></i>
