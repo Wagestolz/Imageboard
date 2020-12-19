@@ -66,6 +66,21 @@ app.post('/upload', uploader.single('image'), s3.upload, (req, res) => {
         res.json({ success: false });
     }
 });
+// Image Delete
+//
+//
+app.post('/delete', s3.delete, (req, res) => {
+    const id = req.body.params.id;
+    const url = req.body.params.url;
+    db.deleteImage(id)
+        .then(({ rows }) => {
+            fs.unlink(url, () => {}); // noop function
+            res.json(rows);
+        })
+        .catch((err) => {
+            console.log('error in db.deleteImage: ', err);
+        });
+});
 
 // load more images
 app.get('/more', (req, res) => {
@@ -199,7 +214,7 @@ app.get('/url', (req, res) => {
         });
     writer.on('finish', function () {
         console.log('uploaded image to server');
-        db.storeNewImage(url, user, title, description)
+        db.storeNewImage(path, user, title, description)
             .then(({ rows }) => {
                 res.json(rows[0]);
             })

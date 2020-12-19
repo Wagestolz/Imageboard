@@ -107,7 +107,7 @@
             </section>
             <!-- END OF IMAGE GALLERY  -->
             <!-- MODAL COMPONENT -->
-            <modal-component v-if="clickId" :click-id="clickId" @taglookup="tagFilter" @close="closeMe" >
+            <modal-component v-if="clickId" :click-id="clickId" @taglookup="tagFilter" @close="closeMe" @deletion="updateDelete">
             </modal-component>
             <!-- MODAL COMPONENT -->
         </div>
@@ -118,6 +118,7 @@
                 <div class="modal-container" >
                     <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
                     <img :src="image.url" :alt="image.id">
+                    <button @click="deleteImage">Delete</button>
                     <div class="modal-title-container">
                         <h2 @click="sameTagImages(image.tag1)">{{image.tag1}}</h2>
                         <h2 @click="sameTagImages(image.tag2)">{{image.tag2}}</h2>

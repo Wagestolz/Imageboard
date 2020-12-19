@@ -94,3 +94,7 @@ module.exports.insertTags = (tag1, tag2, tag3, imageId) => {
 module.exports.checkUpdate = () => {
     return db.query(`SELECT id FROM images ORDER BY id DESC LIMIT 1`);
 };
+
+module.exports.deleteImage = (id) => {
+    return db.query(`DELETE FROM images WHERE id = $1 RETURNING id`, [id]);
+};

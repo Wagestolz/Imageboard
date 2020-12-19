@@ -20,7 +20,7 @@
 --     id SERIAL PRIMARY KEY,
 --     comment TEXT NOT NULL,
 --     username VARCHAR NOT NULL,
---     image_id INTEGER NOT NULL REFERENCES images(id),
+--     image_id INTEGER NOT NULL REFERENCES images(id) ON DELETE CASCADE,
 --     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 -- );
 
@@ -30,6 +30,6 @@
 --     tag1 TEXT,
 --     tag2 TEXT,
 --     tag3 TEXT,
---     image_id INTEGER NOT NULL REFERENCES images(id),
+--     image_id INTEGER NOT NULL REFERENCES images(id) ON DELETE CASCADE,
 --     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 -- );

@@ -103,6 +103,21 @@
                 this.closeModal();
                 this.$emit('taglookup', clickedTag);
             },
+            deleteImage: function () {
+                var self = this;
+                axios
+                    .post('/delete', {
+                        params: { id: this.image.id, url: this.image.url },
+                    })
+                    .then(function (res) {
+                        console.log('successful deletion: ', res.data[0].id);
+                        self.$emit('deletion', res.data[0].id);
+                        self.closeModal();
+                    })
+                    .catch(function (error) {
+                        console.log('error at GET /modal', error);
+                    });
+            },
         },
     });
 
@@ -240,6 +255,11 @@
                 self.image = null;
                 self.imageUrl = '';
                 self.success = true;
+            },
+            updateDelete: function (id) {
+                console.log(id);
+                let index = this.images.findIndex((x) => x.id === id);
+                this.images.splice(index, 1);
             },
             tagFilter: function (clickedTag) {
                 var self = this;
