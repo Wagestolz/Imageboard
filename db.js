@@ -6,7 +6,9 @@ const db = spicedPg(
 
 module.exports.getImages = () => {
     return db.query(`SELECT images.id, images.url, images.username, images.title, images.description, images.created_at, 
-    imagetags.tag1, imagetags.tag2, imagetags.tag3 
+    imagetags.tag1, imagetags.tag2, imagetags.tag3, 
+    (SELECT id FROM images ORDER BY id DESC LIMIT 1) 
+    AS "newestId"
     FROM images 
     LEFT JOIN imagetags 
     on images.id = imagetags.image_id 
@@ -17,7 +19,9 @@ module.exports.getImages = () => {
 module.exports.getTaggdImages = (tag) => {
     return db.query(
         `SELECT images.id, images.url, images.username, images.title, images.description, images.created_at, 
-        imagetags.tag1, imagetags.tag2, imagetags.tag3 
+        imagetags.tag1, imagetags.tag2, imagetags.tag3, 
+        (SELECT id FROM images ORDER BY id DESC LIMIT 1) 
+        AS "newestId"
         FROM images 
         LEFT JOIN imagetags 
         on images.id = imagetags.image_id 
@@ -52,15 +56,15 @@ module.exports.storeNewImage = (upUrl, upUser, UpTitle, UpDescription) => {
 module.exports.getModalImage = (id) => {
     return db.query(
         `SELECT images.id, images.url, images.username, images.title, images.description, images.created_at,
-    (SELECT id FROM images WHERE id < $1 ORDER BY id DESC LIMIT 1)
-    AS "prevId",
-    (SELECT id FROM images WHERE id > $1 ORDER BY id ASC LIMIT 1)
-    AS "nextId",
-    imagetags.tag1, imagetags.tag2, imagetags.tag3 
-    FROM images 
-    LEFT JOIN imagetags 
-    on images.id = imagetags.image_id 
-    WHERE images.id = $1`,
+        (SELECT id FROM images WHERE id < $1 ORDER BY id DESC LIMIT 1)
+        AS "prevId",
+        (SELECT id FROM images WHERE id > $1 ORDER BY id ASC LIMIT 1)
+        AS "nextId",
+        imagetags.tag1, imagetags.tag2, imagetags.tag3 
+        FROM images 
+        LEFT JOIN imagetags 
+        on images.id = imagetags.image_id 
+        WHERE images.id = $1`,
         [id]
     );
 };
@@ -85,4 +89,8 @@ module.exports.insertTags = (tag1, tag2, tag3, imageId) => {
         RETURNING *`,
         [tag1, tag2, tag3, imageId]
     );
+};
+
+module.exports.checkUpdate = () => {
+    return db.query(`SELECT id FROM images ORDER BY id DESC LIMIT 1`);
 };

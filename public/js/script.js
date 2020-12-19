@@ -120,8 +120,15 @@
             filter: '',
             clickId: location.hash.slice(1),
             lowestId: null,
+            newestId: null,
             more: true,
             success: false,
+            updatig: null,
+            updateMessage: false,
+        },
+        // "created" lifecycle hook
+        created: function () {
+            this.updateNotification();
         },
         // "mounted" lifecycle hook
         mounted: function () {
@@ -131,6 +138,7 @@
                 .get('/images')
                 .then(function (res) {
                     self.images = res.data; // data property holds body of response
+                    self.newestId = res.data[0].newestId;
                 })
                 .catch(function (error) {
                     console.log('error at GET /', error);
@@ -138,6 +146,9 @@
             addEventListener('hashchange', function () {
                 self.clickId = location.hash.slice(1); // for open Modal
             });
+        },
+        beforeDestroy: function () {
+            clearInterval(this.updateNotification);
         },
         methods: {
             handleFileChange: function (e) {
@@ -159,6 +170,7 @@
                         .then(function (res) {
                             self.images.unshift(res.data);
                             self.successHandler(self);
+                            self.newestId = res.data.id;
                             return self.addTags(res.data.id);
                         })
                         .catch(function (error) {
@@ -212,6 +224,7 @@
                     .then(function (res) {
                         console.log('tagfilter resolved: ', res);
                         self.images = res.data;
+                        self.newestId = res.data[0].newestId;
                         // self.images = res.data; // data property holds body of response
                     })
                     .catch(function (error) {
@@ -252,6 +265,21 @@
                 } else {
                     self.more = false; // don't render button until at least 9 images uploaded
                 }
+            },
+            updateNotification: function () {
+                var self = this;
+                this.updating = setInterval(() => {
+                    axios
+                        .get('/update', {})
+                        .then(function (res) {
+                            if (res.data[0].id > self.newestId) {
+                                self.updateMessage = true;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log('error in GET /update', error);
+                        });
+                }, 5000);
             },
         },
     });

@@ -63,6 +63,7 @@
             <!-- IMAGE GALLERY-->
             <section class="images-container">
                 <div class="title">
+                    <p v-if="updateMessage">There are new images available, refresh!</p>
                     <h1>Celebs in Aloha</h1>
                     <div class="form-item">
                         <input class="field" type="text" maxlength="15" id="tag-filter" name="tag-filter" v-on:keyup.enter="filterByTag(filter)" v-model="filter" placeholder="Filter by Tag">

@@ -167,6 +167,16 @@ app.get('/images/:tag', (req, res) => {
     }
 });
 
+app.get('/update', (req, res) => {
+    db.checkUpdate()
+        .then(({ rows }) => {
+            res.json(rows);
+        })
+        .catch((err) => {
+            console.log('error in db.checkUpdate: ', err);
+        });
+});
+
 app.use(express.static('public'));
 
 if (require.main == module) {
