@@ -214,7 +214,8 @@ app.get('/url', (req, res) => {
         });
     writer.on('finish', function () {
         console.log('uploaded image to server');
-        db.storeNewImage(path, user, title, description)
+        // replace "url" with "path" to read it from local!
+        db.storeNewImage(url, user, title, description)
             .then(({ rows }) => {
                 res.json(rows[0]);
             })

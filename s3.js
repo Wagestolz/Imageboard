@@ -71,3 +71,35 @@ module.exports.upload = (req, res, next) => {
             res.sendStatus(500);
         });
 };
+
+module.exports.uploadFromUrl = (req, res, next) => {
+    const path = req.body.params.url;
+    const url = req.body.params.url;
+    const filename = url.substring(url.length - 36, url.length);
+    // the putObject()-method does the upload magic
+    const promise = s3
+        .putObject({
+            Bucket: 'aloha.imageboard',
+            ACL: 'public-read', // sets public availability
+            Key: filename,
+            Body: fs.createReadStream(path),
+            ContentType: 'image/png',
+        })
+        .promise(); // this makes it return a promise
+
+    promise
+        .then(() => {
+            console.log('amazon upload complete');
+            next();
+            // Optionally delete image from server (/public):
+            fs.unlink(path, () => {}); // noop function
+        })
+        .catch((err) => {
+            // uh oh
+            console.log(
+                'Something went wrong with the image upload to S3',
+                err
+            );
+            res.sendStatus(500);
+        });
+};
