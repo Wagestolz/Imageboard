@@ -176,7 +176,7 @@
                 e.preventDefault();
                 var self = this;
                 // if url given
-                if (this.image.startsWith('https://')) {
+                if (typeof this.image == 'string') {
                     axios
                         .get('/url', {
                             params: {
@@ -227,7 +227,11 @@
                     console.log('empty tag');
                     this.tagInput = '';
                 } else if (this.tags.length < 3) {
-                    this.tags.push(this.tagInput.toLowerCase());
+                    this.tags.push(
+                        this.tagInput
+                            .toLowerCase()
+                            .substring(0, this.tagInput.length - 1)
+                    );
                     this.tagInput = '';
                 }
             },
@@ -260,7 +264,6 @@
                 self.success = true;
             },
             updateDelete: function (id) {
-                console.log(id);
                 let index = this.images.findIndex((x) => x.id === id);
                 this.images.splice(index, 1);
             },
@@ -282,7 +285,7 @@
             },
             filterByTag: function (tagInput) {
                 this.tagFilter(tagInput);
-                this.filter = '';
+                // this.filter = '';
             },
             resetFilter: function () {
                 this.tagFilter('');

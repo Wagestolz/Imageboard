@@ -28,8 +28,8 @@
                         <div class="form-item">
                             <h2 class="title" >Spotted celebs wearing Aloha?</h2>
                             <h3 class="title">Upload it here!</h3>
-                            <p v-if="success">Upload successful!</p> 
-                            <input class="field" type="text" name="title" v-model="title" placeholder="Image Title" required>
+                            <p id="message" v-if="success">Upload successful!</p> 
+                            <input class="field" type="text" name="title" v-model="title" placeholder="Image Title" required maxlength="30">
                         </div>
                         <div class="form-item">
                             <input class="field" type="text" name="description" v-model="description" placeholder="Description" required>
@@ -38,25 +38,24 @@
                             <input class="field" type="text" required name="user" v-model="user" placeholder="Username" >
                         </div>
                         <div class="form-item">
+                            <input class="field" type="text" maxlength="10" id="tag-input" name="tag" v-on:keyup.188="tagList" v-model="tagInput" placeholder="Enter Tags">
+                        </div>
+                        <div class="tags-container" id="tag-list">
+                                <span v-on:click="deleteTag(index)" class="tag" v-for="(tag, index) in tags"><i class="fas fa-times-circle"></i>&nbsp;{{tag}}</span>
+                        </div>
+                        <div class="form-item">
                             <button class="upload-btn" @click="handleUpload">Upload</button>
                         </div>
                     </form>
                     <div class="choose-file">
                         <div>
-                            <div class="form-item">
-                            <input class="field" type="text" id="image-url" name="url" v-on:keyup.enter="urlUpload" v-model="imageUrl" placeholder="or enter URL">
-                            </div>
                             <input type="file" name="image" id="image" accept="image/*" @change="handleFileChange" class="inputfile" >
                             <label for="image" id="upload">
                                 <i class="fas fa-upload"></i>
                                 {{inputField || 'Choose Img (max 2mb)'}}</label>
                             <div class="form-item">
-                            <input class="field" type="text" maxlength="15" id="tag-input" name="tag" v-on:keyup.enter="tagList" v-model="tagInput" placeholder="Enter Tags">
-                            </div>
-                            <div class="tags-container" >
-                                <ul v-for="(tag, index) in tags" id="tag-list">
-                                    <li v-on:click="deleteTag(index)">{{tag}}</li>
-                                </ul>
+                            <p></p>
+                            <input class="field" type="text" id="image-url" name="url" v-on:keyup.enter="urlUpload" v-model="imageUrl" placeholder="...or enter https-URL">
                             </div>
                         </div>
                     </div>
@@ -68,13 +67,13 @@
                 <div class="title">
                     <p v-if="updateMessage">There are new images available, refresh!</p>
                     <h1>Celebs in Aloha</h1>
-                    <div class="form-item">
-                        <input class="field" type="text" maxlength="15" id="tag-filter" name="tag-filter" v-on:keyup.enter="filterByTag(filter)" v-model="filter" placeholder="Filter by Tag">
+                    <div class="center">
+                        <div class="form-item filter-container">
+                            <input class="field" type="text" maxlength="10" id="tag-filter" name="tag-filter" v-on:keyup.enter="filterByTag(filter)" v-model="filter" placeholder="Filter by Tag">
+                            <button class="upload-btn reset" @click="resetFilter">Reset</button>
+                        </div>
                     </div>
-                    <div class="form-item">
-                    <button class="upload-btn" @click="resetFilter">Reset</button>
-                    </div>
-                    <h2>🏄‍♂️😎</h2>
+                        <!-- <h2>🏄‍♂️😎</h2> -->
                 </div>
                 <div class="images-center">
                     <!-- SINGLE IMAGE -->
@@ -84,7 +83,6 @@
                             :src="image.url"
                             :alt="image.id"
                             />
-                            <!-- @click="setImageId($event, image.id)" -->
                         </a>
                         <!-- IMAGE INFO -->
                         <div class="image-info">
@@ -93,9 +91,9 @@
                         </div>
                         <!-- IMAGE FOOTER -->
                         <div class="image-footer">
-                            <span>{{image.tag1}}</span>
-                            <span>{{image.tag2}}</span>
-                            <span>{{image.tag3}}</span>
+                            <span class="card-tag" v-if="image.tag1">{{image.tag1}}</span>
+                            <span class="card-tag" v-if="image.tag2">{{image.tag2}}</span>
+                            <span class="card-tag" v-if="image.tag3">{{image.tag3}}</span>
                         </div>
                     </article>
                     <!-- END OF SINGLE IMAGE -->
@@ -116,21 +114,34 @@
         <script id="modal-template" type="text/x-template">
             <div class="modal" >
                 <div class="modal-container" >
-                    <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
-                    <img :src="image.url" :alt="image.id">
-                    <button @click="deleteImage">Delete</button>
-                    <div class="modal-title-container">
-                        <h2 @click="sameTagImages(image.tag1)">{{image.tag1}}</h2>
-                        <h2 @click="sameTagImages(image.tag2)">{{image.tag2}}</h2>
-                        <h2 @click="sameTagImages(image.tag3)">{{image.tag3}}</h2>
-                        <a v-if="image.nextId" :href="'#'+image.nextId"><i class="fas fa-arrow-left"></i></a>
-                        <a v-if="image.prevId" :href="'#'+image.prevId"><i class="fas fa-arrow-right"></i></a>
+                    <div class="col1">
+                        <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
+                        <div class="arrows">
+                                <a v-if="image.nextId" :href="'#'+image.nextId" class="left"><i class="far fa-caret-square-left"></i></a>
+                                <a v-if="image.prevId" :href="'#'+image.prevId"class="right"><i class="far fa-caret-square-right"></i></a>
+                        </div> 
+                        <img :src="image.url" :alt="image.id">
+                        <div class="modal-title-container">
+                            <div class="modal-tag-container">
+                                <div class="modal-tags">
+                                    <span @click="sameTagImages(image.tag1)" v-if="image.tag1" class="card-tag modal-tag"><i class="fas fa-tag"></i> {{image.tag1}}</span>
+                                    <span @click="sameTagImages(image.tag2)" v-if="image.tag2"  class="card-tag modal-tag"><i class="fas fa-tag"></i> {{image.tag2}}</span>
+                                    <span @click="sameTagImages(image.tag3)" v-if="image.tag3" class="card-tag modal-tag"><i class="fas fa-tag"></i> {{image.tag3}}</span>
+                                </div>
+                                <button @click="deleteImage" class="delete-btn">Delete <i class="far fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="modal-header-container">
+                                                
                         <h2>{{image.title || 'Another Legend'}}</h2>
                         <h3>{{image.description || 'Look at this beauty'}}</h3>
-                        <h4>uploaded by <span>{{image.username || 'unknown'}}</span> on <span>{{image.created_at.substring(0, 10)}}</span> 
-                    </h4>
-                </div>
-                <comment-component :click-id="clickId"></comment-component>
+                        <h4>uploaded by <span class="created">{{image.username || 'unknown'}}</span> on <span class="created">{{image.created_at.substring(0, 10)}}</span> 
+                        </h4>
+                    </div>
+                    </div>
+                    <div class="col2">
+                        <comment-component :click-id="clickId"></comment-component>
+                    </div>
                 </div>
             </div> 
         </script>
@@ -172,20 +183,3 @@
     </body>
 </html>
 
-
-<!--        LECTURE NOTES:            
-            2 ways to use v-bind:
-            <h2 v-bind:class="myClassName">The cohort is: {{ name }}</h2>
-            <h2 :class="myClassName">The cohort is: {{ name }}</h2>
-            
-            2 ways to use v-on:
-            <ul>
-            <li v-for="city in cities" v-on:click="petesMethod">{{city.name}}, {{city.country}}</li>
-            <li v-for="city in cities" @click="petesMethod(city.name)">
-                    {{city.name}}, {{city.country}}
-                </li>
-            </ul>
-
-            use javascript directly:
-            <h2>Capitalise {{ "hello".toUpperCase() }}</h2>
-            -->
