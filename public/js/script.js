@@ -174,6 +174,9 @@
                     .then(function (res) {
                         self.images = res.data; // data property holds body of response
                         self.newestId = res.data[0].newestId;
+                        if (self.images.length > 8) {
+                            self.more = true;
+                        }
                     })
                     .catch(function (error) {
                         console.log('error at GET /', error);
@@ -302,6 +305,7 @@
             resetFilter: function () {
                 this.tagFilter('');
                 this.filter = '';
+                this.more = true;
             },
             getMore: function () {
                 var self = this;
