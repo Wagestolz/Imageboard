@@ -11,27 +11,33 @@
                 empty: false,
             };
         },
+        watch: {
+            clickId: 'getComments',
+        },
         mounted: function () {
+            this.getComments();
             console.log('Vue Comment component mounted');
-            var self = this;
-            self.empty = false;
-            axios // HTTP request to retrieve the all comments
-                // GET to /comments/:imageId
-                .get(`/comments/:${this.clickId}`, {
-                    params: { imageId: this.clickId },
-                })
-                .then(function (res) {
-                    if (res.data.length > 0) {
-                        self.comments = res.data;
-                    } else {
-                        self.empty = true;
-                    }
-                })
-                .catch(function (error) {
-                    console.log('error at GET /comments/:imageId', error);
-                });
         },
         methods: {
+            getComments: function () {
+                var self = this;
+                self.empty = false;
+                axios // HTTP request to retrieve the all comments
+                    // GET to /comments/:imageId
+                    .get(`/comments/:${this.clickId}`, {
+                        params: { imageId: this.clickId },
+                    })
+                    .then(function (res) {
+                        if (res.data.length > 0) {
+                            self.comments = res.data;
+                        } else {
+                            self.empty = true;
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log('error at GET /comments/:imageId', error);
+                    });
+            },
             postComment: function () {
                 var self = this;
                 if (self.comment && self.username) {
@@ -43,6 +49,8 @@
                         })
                         .then(function (res) {
                             self.comments.unshift(res.data);
+                            self.comment = '';
+                            self.username = '';
                         })
                         .catch(function (error) {
                             console.log('error in POST /comment', error);
@@ -146,27 +154,33 @@
         created: function () {
             this.updateNotification();
         },
+        watch: {
+            newestId: 'getImages',
+        },
         // "mounted" lifecycle hook
         mounted: function () {
             console.log('Vue instance mounted');
-            var self = this;
-            axios
-                .get('/images')
-                .then(function (res) {
-                    self.images = res.data; // data property holds body of response
-                    self.newestId = res.data[0].newestId;
-                })
-                .catch(function (error) {
-                    console.log('error at GET /', error);
-                });
-            addEventListener('hashchange', function () {
-                self.clickId = location.hash.slice(1); // for open Modal
-            });
+            this.getImages();
         },
         beforeDestroy: function () {
             clearInterval(this.updateNotification);
         },
         methods: {
+            getImages: function () {
+                var self = this;
+                axios
+                    .get('/images')
+                    .then(function (res) {
+                        self.images = res.data; // data property holds body of response
+                        self.newestId = res.data[0].newestId;
+                    })
+                    .catch(function (error) {
+                        console.log('error at GET /', error);
+                    });
+                addEventListener('hashchange', function () {
+                    self.clickId = location.hash.slice(1); // for open Modal
+                });
+            },
             handleFileChange: function (e) {
                 this.image = e.target.files[0];
                 this.inputField = e.target.files[0].name;
@@ -224,7 +238,6 @@
             },
             tagList: function () {
                 if (this.tagInput.length == 0) {
-                    console.log('empty tag');
                     this.tagInput = '';
                 } else if (this.tags.length < 3) {
                     this.tags.push(
@@ -243,8 +256,7 @@
                 if (this.tags.length > 0) {
                     axios
                         .post('/tags', { tags: this.tags, id: imageId })
-                        .then(function (res) {
-                            console.log('addTags resolved! res:', res);
+                        .then(function () {
                             self.tags = [];
                             // let index = self.images.findIndex(
                             //     (x) => x.id === imageId
@@ -274,7 +286,6 @@
                         params: { tag: clickedTag.toLowerCase() },
                     })
                     .then(function (res) {
-                        console.log('tagfilter resolved: ', res);
                         self.images = res.data;
                         self.newestId = res.data[0].newestId;
                         // self.images = res.data; // data property holds body of response
@@ -320,6 +331,7 @@
             },
             updateNotification: function () {
                 var self = this;
+                this.success = false;
                 this.updating = setInterval(() => {
                     axios
                         .get('/update')

@@ -526,7 +526,7 @@ Modal
 
 .modal-container img {
     max-height: 60vh;
-    min-height: 360px;
+    min-height: 410px;
     max-width: 600px;
     object-fit: cover;
     object-position: 50% 0%;

@@ -99,10 +99,8 @@ app.get('/more', (req, res) => {
 app.get('/modal', (req, res) => {
     console.log('GET request to /modal');
     const id = req.query.id;
-    console.log('id: ', id);
     db.getModalImage(id)
         .then(({ rows }) => {
-            console.log('rows: ', rows);
             if (rows.length == 0) {
                 res.send({ notfound: true });
             } else {
