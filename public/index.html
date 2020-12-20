@@ -118,7 +118,7 @@
                         <h2 @click="closeModal" class="close-btn"><i class="fas fa-times"></i></h2>
                         <div class="arrows">
                                 <a v-if="image.nextId" :href="'#'+image.nextId" class="left"><i class="far fa-caret-square-left"></i></a>
-                                <a v-if="image.prevId" :href="'#'+image.prevId"class="right"><i class="far fa-caret-square-right"></i></a>
+                                <a v-if="image.prevId" :href="'#'+image.prevId" class="right"><i class="far fa-caret-square-right"></i></a>
                         </div> 
                         <img :src="image.url" :alt="image.id">
                         <div class="modal-title-container">

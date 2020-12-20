@@ -22,6 +22,7 @@
             getComments: function () {
                 var self = this;
                 self.empty = false;
+                self.comments = [];
                 axios // HTTP request to retrieve the all comments
                     // GET to /comments/:imageId
                     .get(`/comments/:${this.clickId}`, {
