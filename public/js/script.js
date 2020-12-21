@@ -65,7 +65,6 @@
     Vue.component('modal-component', {
         template: '#modal-template', // the id of the script tag below vue instance
         props: ['clickId'],
-        // props: ['sayGreeting', 'id', 'url', 'title', 'description'],
         data: function () {
             // data is a function for component (own data set)
             return {

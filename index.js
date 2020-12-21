@@ -211,15 +211,18 @@ app.get('/url', (req, res) => {
             console.log('error in writer.on:', err);
         });
     writer.on('finish', function () {
-        console.log('uploaded image to server');
+        console.log('uploaded image to server: ', path);
+        s3.uploadFromUrl(path, (sr3Url) => {
+            db.storeNewImage(sr3Url, user, title, description)
+                .then(({ rows }) => {
+                    res.json(rows[0]);
+                })
+                .catch((err) => {
+                    console.log('error in db.storeNewImage: ', err);
+                });
+        });
+
         // replace "url" with "path" to read it from local!
-        db.storeNewImage(url, user, title, description)
-            .then(({ rows }) => {
-                res.json(rows[0]);
-            })
-            .catch((err) => {
-                console.log('error in db.storeNewImage: ', err);
-            });
     });
 });
 
