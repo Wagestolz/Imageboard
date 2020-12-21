@@ -27,7 +27,8 @@ module.exports.getTaggdImages = (tag) => {
         on images.id = imagetags.image_id 
         WHERE imagetags.tag1 = $1 
         OR imagetags.tag2 = $1 
-        OR imagetags.tag3 = $1`,
+        OR imagetags.tag3 = $1
+        ORDER BY images.id DESC`,
         [tag]
     );
 };
@@ -49,13 +50,6 @@ module.exports.getMoreImages = (lastId) => {
         [lastId]
     );
 };
-
-// `SELECT *, (SELECT id FROM images ORDER BY id ASC LIMIT 1)
-// AS "lowestId"
-// FROM images
-// WHERE id < $1
-// ORDER BY id DESC
-// LIMIT 9`,
 
 module.exports.storeNewImage = (upUrl, upUser, UpTitle, UpDescription) => {
     return db.query(
