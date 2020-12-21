@@ -34,15 +34,28 @@ module.exports.getTaggdImages = (tag) => {
 
 module.exports.getMoreImages = (lastId) => {
     return db.query(
-        `SELECT *, (SELECT id FROM images ORDER BY id ASC LIMIT 1) 
-        AS "lowestId" 
+        `SELECT images.id, images.url, images.username, images.title, images.description, images.created_at, 
+        imagetags.tag1, imagetags.tag2, imagetags.tag3, 
+        (SELECT id FROM images ORDER BY id DESC LIMIT 1) 
+        AS "newestId", 
+        (SELECT id FROM images ORDER BY id ASC LIMIT 1) 
+        AS "lowestId"  
         FROM images 
-        WHERE id < $1 
-        ORDER BY id DESC 
-        LIMIT 9`,
+        LEFT JOIN imagetags 
+        on images.id = imagetags.image_id 
+        WHERE images.id < $1 
+        ORDER BY id 
+        DESC LIMIT 9`,
         [lastId]
     );
 };
+
+// `SELECT *, (SELECT id FROM images ORDER BY id ASC LIMIT 1)
+// AS "lowestId"
+// FROM images
+// WHERE id < $1
+// ORDER BY id DESC
+// LIMIT 9`,
 
 module.exports.storeNewImage = (upUrl, upUser, UpTitle, UpDescription) => {
     return db.query(
