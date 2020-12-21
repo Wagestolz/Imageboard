@@ -52,6 +52,7 @@
                             self.comments.unshift(res.data);
                             self.comment = '';
                             self.username = '';
+                            self.empty = false;
                         })
                         .catch(function (error) {
                             console.log('error in POST /comment', error);
